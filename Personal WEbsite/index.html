@@ -354,5 +354,15 @@
 </main>
 
 <script src="assets/site.js?v=11" defer></script>
+<script>
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="mailto:"], a[href^="tel:"]');
+    if (!a || typeof gtag !== 'function') return;
+    gtag('event', 'generate_lead', {
+      method: a.href.startsWith('mailto:') ? 'email' : 'phone',
+      link_url: a.href
+    });
+  });
+</script>
 </body>
 </html>
