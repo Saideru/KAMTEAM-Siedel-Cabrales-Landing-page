@@ -273,8 +273,9 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
   background:repeating-linear-gradient(0deg,rgba(255,255,255,0.06) 0 1px,transparent 1px 3px);
   mix-blend-mode:screen;animation:flicker 3s infinite;
 }
-.hero-left{display:flex;flex-direction:column;align-items:flex-start;gap:1.75rem}
+.hero-left{display:flex;flex-direction:column;align-items:flex-start;gap:1rem}
 .hero-proj{font-size:1.375rem;padding:1.1rem 2.25rem;letter-spacing:0.18em;border-width:2px}
+.hero-services{font-size:1rem;padding:0.75rem 1.5rem;letter-spacing:0.16em}
 .hero-fade{position:absolute;inset-inline:0;bottom:0;z-index:20;height:7vh;background:linear-gradient(to bottom,transparent,#040610);pointer-events:none}
 .hero-name{
   position:absolute;z-index:10;inset-inline:0;bottom:0;transform:translateY(4%);
@@ -361,6 +362,31 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 .sk-list li:hover{background:rgba(109,241,255,0.1);border-left-color:var(--green);color:#fff;text-shadow:0 0 6px var(--green-glow)}
 .sk-idx{font-size:0.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .sk-list li:hover .sk-idx{color:var(--accent)}
+
+/* ================= Services ================= */
+.service-grid{margin-top:4rem;display:grid;grid-template-columns:1fr;gap:1.25rem}
+@media (min-width:640px){.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.service-card{
+  position:relative;min-height:12.5rem;padding:1.5rem;border:1px solid var(--line-strong);
+  background:var(--surface);box-shadow:inset 0 0 30px rgba(14,74,90,0.2);
+}
+.service-num{font-family:var(--font-display);font-size:2rem;color:var(--accent);text-shadow:0 0 8px var(--accent-glow)}
+.service-card h3{margin-top:1rem;font-family:var(--font-display);font-size:2.2rem;font-weight:400;line-height:1;text-transform:uppercase;text-shadow:0 0 8px var(--green-glow)}
+.service-card p{margin-top:0.75rem;max-width:42ch;font-size:0.9375rem;line-height:1.6;color:var(--muted)}
+@media (min-width:640px){
+  .service-card:nth-child(2){transform:translateY(2rem)}
+  .service-card:nth-child(3){transform:translateY(1rem)}
+  .service-card:nth-child(4){transform:translateY(3rem)}
+}
+.service-card-ai{
+  border-color:#b8fbff;
+  background:linear-gradient(135deg,rgba(109,241,255,0.26),rgba(8,44,58,0.82));
+  box-shadow:0 0 18px rgba(109,241,255,0.8),0 0 42px rgba(109,241,255,0.55),inset 0 0 32px rgba(109,241,255,0.4);
+}
+.service-card-ai .service-num{color:#fff;text-shadow:0 0 8px #fff,0 0 20px #6df1ff}
+.service-card-ai h3{font-size:1.8rem;color:#fff;text-shadow:0 0 5px #fff,0 0 14px #6df1ff,0 0 28px #6df1ff}
+.service-card-ai p{color:#e9fdff}
+.services-contact{margin-top:2rem}
 
 /* ================= Projects ================= */
 .ventures-h{max-width:14ch;font-size:4.25rem;line-height:0.92}
