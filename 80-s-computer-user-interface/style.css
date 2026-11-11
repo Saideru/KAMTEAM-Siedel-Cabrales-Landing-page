@@ -1,0 +1,464 @@
+:root {
+  /* SAPI — Synthetic Assistive Processing Interface
+     Primary = ice cyan; accent = soft lavender; warn amber; danger red. */
+  --green: #6df1ff;        /* primary */
+  --green-dim: #2fb3cc;    /* dim */
+  --green-dark: #0a4a5a;   /* dark */
+  --green-bg: #001820;     /* deep */
+  --green-glow: rgba(109, 241, 255, 0.55);
+  --accent: #c58dff;       /* lavender */
+  --accent-glow: rgba(197, 141, 255, 0.5);
+  --amber: #ffb84d;
+  --danger: #ff5566;
+  --bg: #040610;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Share Tech Mono', monospace;
+  background: radial-gradient(ellipse at center, #0a1824 0%, #020308 85%);
+  color: var(--green);
+  font-size: 16px;
+  padding: 24px;
+  overflow-x: hidden;
+  animation: twitch 2.5s steps(1) infinite;
+}
+
+::selection { background-color: var(--green-dim); color: #000; }
+
+/* ----- CRT shell ----- */
+.crt {
+  position: relative;
+  min-height: calc(100vh - 48px);
+  border-radius: 24px / 14px;
+  padding: 18px 22px 22px;
+  background:
+    radial-gradient(ellipse at center, rgba(10,44,60,0.4) 0%, rgba(0,0,0,0.65) 100%),
+    #000;
+  box-shadow:
+    inset 0 0 120px rgba(20,110,140,0.4),
+    inset 0 0 40px rgba(109,241,255,0.12),
+    0 0 60px rgba(109,241,255,0.1);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Scanlines overlay */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.18) 3px,
+    rgba(0, 0, 0, 0.18) 3px
+  );
+  mix-blend-mode: multiply;
+  animation: scanShift 7s linear infinite;
+}
+
+/* Soft vignette / glass curvature */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(180deg, rgba(255,255,255,0.03), transparent 30%);
+}
+
+.crt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  background: linear-gradient(
+    90deg,
+    rgba(255,0,0,0.04),
+    transparent 20%,
+    transparent 80%,
+    rgba(0,0,255,0.04)
+  );
+  mix-blend-mode: screen;
+}
+
+/* ----- Status bar ----- */
+.statusBar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 6px 10px 10px;
+  border-bottom: 1px dashed var(--green-dim);
+  margin-bottom: 14px;
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 0 6px var(--green-glow);
+}
+
+.statusBar b { color: #cfc; font-weight: normal; }
+
+.blink { animation: blink 1.1s steps(1) infinite; }
+
+/* ----- Layout ----- */
+.screen {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  animation: flicker 3s infinite;
+}
+
+.buttonGroup {
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ----- Headings ----- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Share Tech Mono', monospace;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 2px 0 12px;
+  font-size: 1.05em;
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+h2::before, h2::after,
+h1::before, h1::after,
+h3::before, h3::after {
+  content: " ✱ ✱ ";
+  opacity: 0.8;
+}
+
+/* ----- Buttons ----- */
+button {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--green);
+  background: transparent;
+  padding: 10px 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: block;
+  width: 100%;
+  margin: 0 0 10px 0;
+  outline: none;
+  border: 1px solid var(--green);
+  box-shadow: 0 0 8px rgba(109,241,255,0.25), inset 0 0 8px rgba(109,241,255,0.08);
+  cursor: pointer;
+  transition: transform 0.05s linear, box-shadow 0.15s ease;
+  text-shadow: 0 0 4px var(--green-glow);
+  font-size: 0.95em;
+}
+
+button:hover {
+  animation: flicker2 0.15s infinite alternate;
+  color: #000;
+  background: repeating-linear-gradient(0deg, #5de0ee, #5de0ee 1px, #0a4a5a 1px, #0a4a5a 2px);
+  border-color: transparent;
+  box-shadow: 0 0 25px var(--green-dim), inset 0 0 25px var(--green-dim);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 35px var(--green), inset 0 0 25px var(--green);
+}
+
+button:focus-visible {
+  outline: 2px dashed var(--green);
+  outline-offset: 2px;
+}
+
+button.on {
+  color: #000;
+  background: repeating-linear-gradient(0deg, #6df1ff, #6df1ff 1px, #0a4a5a 1px, #0a4a5a 2px);
+  border-color: transparent;
+  box-shadow: 0 0 20px var(--green), inset 0 0 20px var(--green-dim);
+}
+
+button.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+  text-shadow: 0 0 4px rgba(255,80,80,0.6);
+  box-shadow: 0 0 8px rgba(255,80,80,0.3), inset 0 0 8px rgba(255,80,80,0.1);
+}
+
+button.danger:hover {
+  background: repeating-linear-gradient(0deg, #f55, #f55 1px, #500 1px, #500 2px);
+  box-shadow: 0 0 25px #f55, inset 0 0 25px #a00;
+}
+
+button.dim {
+  opacity: 0.45;
+  border-style: dashed;
+}
+
+/* ----- Media panel ----- */
+.imageDisplay {
+  width: 100%;
+  border: 1px solid var(--green);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(109,241,255,0.15), inset 0 0 40px rgba(14,74,90,0.4);
+  aspect-ratio: 16 / 9;
+}
+
+.imageDisplay .aspect {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, #0a4a5a, #0a4a5a 1px, #021018 1px, #021018 2px);
+}
+
+#iframeVideo {
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: screen;
+  filter: hue-rotate(80deg) saturate(1.5) contrast(1.1);
+}
+
+.caption {
+  text-align: center;
+  margin: 10px 0 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+/* ----- HR divider ----- */
+hr {
+  position: relative;
+  height: 1em;
+  border: none;
+  background: repeating-linear-gradient(0deg, #5de0ee, #5de0ee 1px, #0a4a5a 1px, #0a4a5a 2px);
+  margin: 12px 0;
+}
+
+hr::after {
+  content: "✱✱✱✱✱✱✱✱✱✱✱✱✱✱✱✱✱";
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #000;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 0.1em;
+}
+
+/* ----- Radar / scanning ----- */
+.radar {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(14,60,76,0.4) 0%, rgba(0,0,0,0.85) 70%);
+  box-shadow: inset 0 0 40px rgba(109,241,255,0.15), 0 0 20px rgba(109,241,255,0.2);
+  max-width: 260px;
+}
+
+.radarGrid {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 calc(10% - 1px), rgba(109,241,255,0.25) calc(10% - 1px) 10%),
+    repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), rgba(109,241,255,0.25) calc(10% - 1px) 10%);
+}
+
+.radar::before,
+.radar::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(109,241,255,0.4);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.radar::before { width: 66%; height: 66%; }
+.radar::after  { width: 33%; height: 33%; }
+
+.radarSweep {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from 0deg,
+    rgba(109,241,255,0.55) 0deg,
+    rgba(109,241,255,0.15) 20deg,
+    transparent 60deg,
+    transparent 360deg);
+  animation: sweep 3.5s linear infinite;
+  mix-blend-mode: screen;
+}
+
+.blip {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--green), 0 0 16px var(--green);
+  transform: translate(-50%, -50%);
+  animation: blipFade 3.5s ease-out infinite;
+  animation-delay: var(--d, 0s);
+  opacity: 0;
+}
+
+/* ----- Channel grid ----- */
+.setButtons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.setButtons button { margin: 0; flex: 1; }
+
+.channels {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.channels button { padding: 10px 4px; font-size: 0.85em; }
+
+/* ----- Terminal log ----- */
+.terminal {
+  border: 1px solid var(--green-dim);
+  padding: 8px 10px;
+  background: rgba(5,24,36,0.35);
+  font-size: 0.85em;
+  min-height: 140px;
+  box-shadow: inset 0 0 20px rgba(14,74,90,0.25);
+}
+
+.termHeader {
+  border-bottom: 1px dashed var(--green-dim);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+  letter-spacing: 0.1em;
+  opacity: 0.85;
+}
+
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 180px;
+  overflow: hidden;
+}
+
+.log li {
+  padding: 1px 0;
+  opacity: 0;
+  animation: typeIn 0.25s ease-out forwards;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 0 4px var(--green-glow);
+}
+
+.log li.warn { color: var(--amber); text-shadow: 0 0 4px rgba(255,170,0,0.6); }
+.log li.err  { color: var(--danger); text-shadow: 0 0 4px rgba(255,80,80,0.6); }
+
+/* ----- Paragraphs ----- */
+.buttonGroup p {
+  margin: 0 0 1em;
+  line-height: 1.5;
+  text-shadow: 0 0 3px rgba(109,241,255,0.25);
+}
+
+/* ----- Animations ----- */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  48% { opacity: 1; }
+  49% { opacity: 0.88; }
+  50% { opacity: 1; }
+  52% { opacity: 0.94; }
+  53% { opacity: 1; }
+}
+
+@keyframes flicker2 {
+  0%   { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+@keyframes blink {
+  0%, 50%  { opacity: 1; }
+  51%, 100% { opacity: 0.1; }
+}
+
+@keyframes twitch {
+  0%, 99%, 100% { transform: translate(0, 0); }
+  99.3% { transform: translate(-0.5px, 0.5px); }
+  99.6% { transform: translate(0.5px, -0.3px); }
+}
+
+@keyframes scanShift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 100px; }
+}
+
+@keyframes sweep {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes blipFade {
+  0%   { opacity: 0; }
+  5%   { opacity: 1; }
+  40%  { opacity: 0.7; }
+  100% { opacity: 0; }
+}
+
+@keyframes typeIn {
+  from { opacity: 0; transform: translateX(-4px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.slideIn { animation: slideIn 0.3s ease-out both; }
+
+/* ----- Responsive ----- */
+@media (max-width: 900px) {
+  .screen { grid-template-columns: 1fr 1fr; }
+  .buttonGroup:last-child { grid-column: span 2; }
+}
+
+@media (max-width: 600px) {
+  body { padding: 12px; font-size: 15px; }
+  .screen { grid-template-columns: 1fr; }
+  .buttonGroup:last-child { grid-column: auto; }
+  .statusBar { gap: 10px; font-size: 0.75em; }
+  .radar { max-width: 220px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+  }
+}

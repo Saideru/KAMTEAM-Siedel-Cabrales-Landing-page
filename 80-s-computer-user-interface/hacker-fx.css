@@ -1,0 +1,440 @@
+/* ============================================================
+   hacker-fx.css — overlay effects. Reuses style.css tokens:
+   --green, --green-dim, --green-dark, --amber, --danger, --green-glow
+   ============================================================ */
+
+/* ---------- Fake terminal popups ---------- */
+.fxWin {
+  position: fixed;
+  width: 320px;
+  min-height: 120px;
+  max-height: 320px;
+  background: rgba(2, 10, 18, 0.92);
+  border: 1px solid var(--green);
+  box-shadow: 0 0 20px rgba(109, 241, 255, 0.3), inset 0 0 20px rgba(14, 74, 90, 0.3);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--green);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  animation: fxWinIn 0.2s ease-out;
+}
+
+.fxWin.fxSmall { width: 230px; min-height: 90px; max-height: 200px; }
+
+.fxWinBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 6px 4px 8px;
+  border-bottom: 1px solid var(--green);
+  background: rgba(14, 60, 76, 0.5);
+  cursor: move;
+  user-select: none;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fxWinClose {
+  background: transparent;
+  border: 1px solid var(--green-dim);
+  color: var(--green);
+  width: 20px; height: 20px;
+  padding: 0; margin: 0;
+  box-shadow: none;
+  line-height: 1;
+  font-family: inherit;
+}
+.fxWinClose:hover {
+  background: var(--danger); color: #000;
+  border-color: var(--danger);
+  animation: none; box-shadow: none;
+}
+
+.fxWinBody {
+  flex: 1;
+  margin: 0;
+  padding: 8px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.fxCursor {
+  display: inline-block;
+  width: 0.6em;
+  animation: fxCursorBlink 0.8s steps(1) infinite;
+}
+
+.fxWinClosing { animation: fxWinOut 0.25s ease-in forwards; }
+
+.fx-err  { color: var(--danger); text-shadow: 0 0 4px rgba(255, 80, 80, 0.6); }
+.fx-warn { color: var(--amber);  text-shadow: 0 0 4px rgba(255, 170, 0, 0.6); }
+.fx-ok   { color: var(--green);  text-shadow: 0 0 4px var(--green-glow); }
+
+@keyframes fxWinIn  {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes fxWinOut {
+  to { opacity: 0; transform: scale(0.9) skewX(14deg); filter: blur(3px); }
+}
+@keyframes fxCursorBlink {
+  0%, 50%   { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ---------- Boot sequence ---------- */
+.fxBoot {
+  position: fixed; inset: 0;
+  background: #000;
+  color: var(--green);
+  font-family: 'Share Tech Mono', monospace;
+  padding: 40px 60px;
+  z-index: 9999;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.5;
+  text-shadow: 0 0 6px var(--green-glow);
+}
+.fxBootText { margin: 0; white-space: pre-wrap; }
+.fxBoot .skipHint {
+  position: absolute; bottom: 20px; right: 30px;
+  opacity: 0.6; font-size: 11px; letter-spacing: 0.1em;
+}
+.fxBoot.fxFade { opacity: 0; transition: opacity 0.6s; }
+
+/* ---------- Matrix rain ---------- */
+.fxMatrix {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  opacity: 0.14;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* ---------- Console ---------- */
+.fxConsole {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 9000;
+  background: rgba(2, 10, 18, 0.96);
+  border-bottom: 1px solid var(--green);
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--green);
+  transform: translateY(-100%);
+  transition: transform 0.22s ease-out;
+  box-shadow: 0 0 30px rgba(109, 241, 255, 0.3);
+  display: flex; flex-direction: column;
+  max-height: 60vh;
+}
+.fxConsole.fxConOpen { transform: translateY(0); }
+
+.fxConHistory {
+  padding: 10px 14px;
+  overflow-y: auto;
+  max-height: 46vh;
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+.fxConHistory > div { margin: 1px 0; }
+
+.fxConInput {
+  display: flex;
+  padding: 8px 14px;
+  border-top: 1px solid var(--green-dim);
+}
+.fxConPrompt { white-space: nowrap; padding-right: 6px; }
+.fxConField {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--green); font-family: inherit; font-size: 13px;
+  caret-color: var(--green);
+}
+
+/* ---------- Modal (DESTROY confirm) ---------- */
+.fxModal {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  z-index: 9500;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.15s;
+}
+.fxModal.fxOpen { opacity: 1; }
+
+.fxModalBox {
+  background: #000;
+  border: 2px solid var(--danger);
+  padding: 20px 30px;
+  min-width: 300px;
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  box-shadow: 0 0 40px rgba(255, 80, 80, 0.5);
+  color: var(--green);
+}
+.fxModalTitle {
+  font-size: 1.15em;
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+  color: var(--danger);
+  text-shadow: 0 0 6px rgba(255, 80, 80, 0.6);
+}
+.fxModalMsg { margin: 6px 0; }
+.fxModalActions {
+  margin-top: 16px;
+  display: flex; gap: 10px; justify-content: center;
+}
+.fxModalActions button { width: 80px; margin: 0; }
+.fxCountdown { font-size: 1.8em; display: inline-block; min-width: 2em; }
+
+/* ---------- Idle screensaver ---------- */
+.fxIdle {
+  position: fixed; inset: 0;
+  z-index: 8000;
+  background: rgba(0, 0, 0, 0.78);
+  color: var(--green);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.6s;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-family: 'Share Tech Mono', monospace;
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 10px var(--green-glow);
+}
+.fxIdle.fxIdleOn { opacity: 1; animation: fxIdleDrift 8s ease-in-out infinite alternate; }
+.fxIdleText { font-size: 1.6em; text-align: center; margin: 0; }
+.fxSpinner  { font-size: 2em; margin-top: 20px; }
+@keyframes fxIdleDrift {
+  from { transform: translate(-14px, -6px); }
+  to   { transform: translate(14px, 6px); }
+}
+
+/* ---------- Konami breach ---------- */
+.fxBreach {
+  position: fixed; inset: 0;
+  z-index: 9800;
+  display: flex; align-items: center; justify-content: center;
+  animation: fxBreachFlash 0.2s steps(2) infinite;
+}
+.fxBreachText {
+  font-family: 'Share Tech Mono', monospace;
+  color: #fff;
+  font-size: clamp(2em, 8vw, 5em);
+  letter-spacing: 0.3em;
+  text-shadow: 0 0 20px #f00, 0 0 40px #f00;
+}
+.fxBreach.fxFade { opacity: 0; transition: opacity 0.4s; }
+@keyframes fxBreachFlash {
+  0%   { background: rgba(255, 0, 0, 0.42); }
+  100% { background: rgba(0, 0, 0, 0.3); }
+}
+
+/* ---------- Screen shake ---------- */
+.fxShake { animation: fxShake 0.08s linear infinite; }
+@keyframes fxShake {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(-3px, 1px); }
+  50%      { transform: translate(3px, -2px); }
+  75%      { transform: translate(-1px, 3px); }
+}
+
+/* ---------- Glitch (headers) ---------- */
+.fxGlitch {
+  animation: fxGlitchAnim 0.3s steps(4) 1;
+}
+@keyframes fxGlitchAnim {
+  0%   { transform: translate(0, 0);   text-shadow: 0 0 8px var(--green-glow); }
+  20%  { transform: translate(-3px, 1px);  text-shadow: 3px 0 #f00, -3px 0 #0ff, 0 0 8px var(--green-glow); clip-path: inset(10% 0 40% 0); }
+  40%  { transform: translate(3px, -1px);  text-shadow: -3px 0 #f00, 3px 0 #0ff, 0 0 8px var(--green-glow); clip-path: inset(60% 0 10% 0); }
+  60%  { transform: translate(-2px, 2px);  text-shadow: 2px 0 #f00, -2px 0 #0ff; clip-path: inset(30% 0 30% 0); }
+  100% { transform: translate(0, 0);   text-shadow: 0 0 8px var(--green-glow); clip-path: none; }
+}
+
+/* ---------- Brand mark ---------- */
+.brand {
+  font-weight: bold;
+  letter-spacing: 0.3em;
+  padding: 2px 10px;
+  border: 1px solid var(--green);
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
+  box-shadow:
+    inset 0 0 10px rgba(109,241,255,0.18),
+    0 0 12px rgba(109,241,255,0.2);
+  background: rgba(10, 44, 60, 0.4);
+}
+
+/* ---------- Status bar sound toggle ---------- */
+.statBtn {
+  background: transparent;
+  border: 1px solid var(--green-dim);
+  color: var(--green);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.78em;
+  letter-spacing: 0.1em;
+  padding: 2px 10px;
+  margin: 0;
+  width: auto;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: none;
+}
+.statBtn:hover {
+  background: var(--green); color: #000;
+  animation: none; box-shadow: none;
+  border-color: var(--green);
+}
+.statBtn[aria-pressed="true"] {
+  background: var(--green-dark); color: var(--green);
+  border-color: var(--green);
+}
+
+/* ---------- Embedded project frame window ---------- */
+.fxFrameWin {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  max-height: none;
+}
+.fxFrameWin .fxWinBar { padding-right: 4px; }
+.fxWinActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.fxWinNewTab {
+  color: var(--green);
+  text-decoration: none;
+  border: 1px solid var(--green-dim);
+  width: 20px; height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 12px;
+}
+.fxWinNewTab:hover {
+  background: var(--green);
+  color: #000;
+  border-color: var(--green);
+}
+.fxFrameWrap {
+  position: relative;
+  flex: 1;
+  background: #000;
+  overflow: hidden;
+}
+.fxFrame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #000;
+  display: block;
+}
+.fxFrameLoading,
+.fxFrameBlocked {
+  position: absolute;
+  inset: 0;
+  padding: 20px;
+  color: var(--green);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  text-shadow: 0 0 6px var(--green-glow);
+  background: rgba(2, 10, 18, 0.92);
+  z-index: 2;
+}
+.fxFrameBlocked { color: var(--danger); text-shadow: 0 0 6px rgba(255,80,80,0.6); }
+.fxFrameOpenExt {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--green);
+  border: 1px solid var(--green);
+  padding: 6px 12px;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 4px var(--green-glow);
+}
+.fxFrameOpenExt:hover {
+  background: var(--green);
+  color: #000;
+}
+
+/* ---------- Projects popup (styled like a TTY intrusion window) ---------- */
+.fxWin.fxProjectsWin {
+  width: min(420px, 92vw);
+  max-height: 68vh;
+  min-height: 160px;
+}
+
+.fxWin.fxProjectsWin .fxWinBody {
+  padding: 6px 0;
+  overflow-y: auto;
+}
+
+.fxProjectLine {
+  display: block;
+  padding: 4px 10px;
+  color: var(--green);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  border-left: 2px solid transparent;
+  opacity: 0;
+  animation: fxProjIn 0.22s ease-out forwards;
+  text-shadow: 0 0 4px var(--green-glow);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fxProjectLine:hover,
+.fxProjectLine:focus-visible {
+  background: rgba(109, 241, 255, 0.1);
+  border-left-color: var(--green);
+  outline: none;
+  color: #fff;
+}
+
+.fxProjectLine .idx {
+  opacity: 0.55;
+  padding-right: 6px;
+}
+
+.fxProjectLine .host {
+  opacity: 0.55;
+  font-size: 0.85em;
+  padding-left: 8px;
+}
+
+.fxProjectsFooter {
+  padding: 4px 10px;
+  border-top: 1px dashed var(--green-dim);
+  font-size: 0.78em;
+  letter-spacing: 0.1em;
+  opacity: 0.65;
+  text-transform: uppercase;
+}
+
+@keyframes fxProjIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ---------- Global FX off switch ---------- */
+.fxOff .scanlines,
+.fxOff .vignette,
+.fxOff .fxMatrix { display: none; }
+.fxOff *,
+.fxOff *::before,
+.fxOff *::after { animation: none !important; }
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .fxWin, .fxBreach, .fxShake { animation: none !important; }
+  .fxMatrix { display: none; }
+  .fxGlitch { animation: none !important; }
+}
