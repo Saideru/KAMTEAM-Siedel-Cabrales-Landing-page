@@ -29,7 +29,7 @@ const PROJECTS = [
 ];
 
 const PUBLIC_PROJECTS = PROJECTS.filter(p => !p.private);
-const MARQUEE = ["Full-Stack Development", "Web Design", "Cybersecurity", "Database Administration", "IP CCTV",
+const MARQUEE = ["Full-Stack Development", "Web Design", "Security Auditing", "Database Administration", "IP CCTV",
                  "Hardware Diagnostics", "Network Monitoring", "Conversational AI", "IT Training", "System Monitoring"];
 
 const host = url => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
