@@ -217,61 +217,36 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 @media (min-width:768px){.nav-links{display:flex}.burger{display:none}}
 @media (min-width:1100px){.nav-sys{display:block}}
 
-.side-inquiry{
-  position:fixed;z-index:40;top:50%;right:0;transform:translateY(-50%);
-  display:flex;align-items:center;gap:0.65rem;padding:1rem 0.7rem;
-  border:1px solid var(--green);border-right:0;background:rgba(2,10,18,0.94);
-  color:var(--green);font-size:0.75rem;line-height:1;text-transform:uppercase;letter-spacing:0.16em;
-  writing-mode:vertical-rl;text-shadow:0 0 8px var(--green-glow);font-family:inherit;cursor:pointer;
-  box-shadow:0 0 16px rgba(109,241,255,0.28),inset 0 0 12px rgba(109,241,255,0.12);
-  transition:color 180ms ease-out,background-color 180ms ease-out,box-shadow 180ms ease-out;
-}
-.side-inquiry:hover,.side-inquiry:focus-visible{
-  color:#000;background:var(--green);outline:none;
-  box-shadow:0 0 24px rgba(109,241,255,0.75);
-}
-@media (max-width:639.98px){
-  .side-inquiry{
-    top:auto;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));transform:none;flex-direction:row;
-    padding:0.75rem 1rem;border-right:1px solid var(--green);writing-mode:horizontal-tb;
-  }
-}
-.inquiry-dialog{
-  width:min(34rem,calc(100% - 2rem));max-height:min(90vh,48rem);padding:0;
+.inquiry-panel{
+  width:100%;align-self:start;overflow:auto;
   border:1px solid var(--green);background:#040b13;color:var(--text);
   box-shadow:0 0 36px rgba(109,241,255,0.32),inset 0 0 24px rgba(14,74,90,0.3);
 }
-.inquiry-dialog[open]{animation:winIn 0.2s ease-out}
-.inquiry-dialog::backdrop{background:rgba(0,0,0,0.76);backdrop-filter:blur(3px)}
-.inquiry-dialog-bar{
+.inquiry-panel-bar{
   display:flex;align-items:center;justify-content:space-between;gap:1rem;
   padding:0.9rem 1rem;border-bottom:1px solid var(--green);background:rgba(14,60,76,0.5);
 }
-.inquiry-dialog-bar h2{font-family:var(--font-display);font-size:2rem;font-weight:400;line-height:1;text-transform:uppercase;color:var(--green);text-shadow:0 0 8px var(--green-glow)}
+.inquiry-panel-bar h2{font-family:var(--font-display);font-size:2rem;font-weight:400;line-height:1;text-transform:uppercase;color:var(--green);text-shadow:0 0 8px var(--green-glow)}
 .inquiry-close{
   width:2rem;height:2rem;border:1px solid var(--green-dim);color:var(--green);font-size:1.25rem;
 }
 .inquiry-close:hover,.inquiry-close:focus-visible{background:var(--danger);border-color:var(--danger);color:#000;outline:none}
 .inquiry-intro{padding:1rem 1.25rem 0;color:var(--muted);font-size:0.875rem}
-.inquiry-dialog form{display:grid;gap:0.6rem;padding:1rem 1.25rem 1.25rem}
-.inquiry-dialog label{margin-top:0.4rem;color:var(--green);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase}
-.inquiry-dialog label span{color:var(--muted);letter-spacing:normal;text-transform:none}
-.inquiry-dialog input,.inquiry-dialog textarea{
+.inquiry-panel form{display:grid;gap:0.6rem;padding:1rem 1.25rem 1.25rem}
+.inquiry-panel label{margin-top:0.4rem;color:var(--green);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase}
+.inquiry-panel textarea{
   width:100%;padding:0.75rem;border:1px solid var(--line-strong);border-radius:0;
   background:rgba(0,0,0,0.45);color:var(--text);font:inherit;font-size:0.9375rem;
 }
-.inquiry-dialog textarea{min-height:8rem;resize:vertical}
-.inquiry-dialog input:focus,.inquiry-dialog textarea:focus{border-color:var(--green);outline:1px solid var(--green);box-shadow:0 0 12px rgba(109,241,255,0.2)}
-.inquiry-dialog input::placeholder,.inquiry-dialog textarea::placeholder{color:var(--muted);opacity:0.72}
+.inquiry-panel textarea{min-height:10rem;resize:vertical}
+.inquiry-panel textarea:focus{border-color:var(--green);outline:1px solid var(--green);box-shadow:0 0 12px rgba(109,241,255,0.2)}
+.inquiry-panel textarea::placeholder{color:var(--muted);opacity:0.72}
 .inquiry-send{justify-self:start;margin-top:0.6rem}
 .inquiry-status{min-height:1.5em;color:var(--green);font-size:0.8125rem}
 .inquiry-note{color:var(--muted);font-size:0.75rem;line-height:1.5}
 .inquiry-note a{display:inline-block;margin-top:0.5rem;color:var(--green);text-decoration:underline;text-underline-offset:0.2em}
 .inquiry-note a:hover,.inquiry-note a:focus-visible{color:#fff;text-shadow:0 0 8px var(--green-glow);outline:none}
-@media (max-width:639.98px){
-  .inquiry-dialog{max-height:calc(100dvh - 2rem - env(safe-area-inset-top) - env(safe-area-inset-bottom))}
-  .inquiry-dialog form{padding:0.75rem 1rem 1rem}
-}
+.inquiry-panel textarea{min-height:12rem}
 
 .mobile-menu{
   position:fixed;inset:0;z-index:50;background:#020308;
@@ -581,8 +556,14 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 
 /* ================= Contact / Footer ================= */
 .contact{position:relative;padding-top:var(--section);padding-inline:var(--gutter)}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start}
+.contact-info{min-width:0}
+@media (min-width:1024px){
+  .contact-grid{grid-template-columns:minmax(0,7fr) minmax(20rem,5fr);gap:var(--gutter)}
+}
 .contact-h{max-width:18ch;font-size:4.75rem;line-height:0.92}
 @media (min-width:640px){.contact-h{font-size:8rem}}
+.contact-grid .contact-h{font-size:clamp(3.5rem,6.2vw,7.5rem)}
 .contact-body{margin-top:2rem;max-width:44ch;font-size:1.25rem;line-height:1.45;color:var(--text)}
 .email-wrap{margin-top:3rem}
 .email{
@@ -594,6 +575,7 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 .email:hover,.email:focus-visible{transform:translateX(14px);color:var(--accent);text-shadow:0 0 14px var(--accent-glow);outline:none}
 .email .arrow{color:var(--accent)}
 @media (min-width:640px){.email{gap:1rem;font-size:6.5rem;line-height:0.9}}
+.contact-grid .email{font-size:clamp(2.5rem,5vw,5.5rem)}
 .contact-lines{margin-top:3rem;display:grid;grid-template-columns:1fr;max-width:44rem;border-top:1px dashed var(--line-strong)}
 .contact-lines div{display:grid;grid-template-columns:5rem 1fr;gap:1rem;padding:0.9rem 0;border-bottom:1px dashed var(--line-strong)}
 .contact-lines dt{font-size:0.8125rem;letter-spacing:0.2em;color:var(--accent);padding-top:0.15rem}

@@ -10,19 +10,8 @@ const ri = (a, b) => Math.floor(rand(a, b + 1));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 const MESSENGER_URL = "https://www.messenger.com/e2ee/t/9953194074700086";
-const inquiryDialog = $("#inquiryDialog");
 const inquiryForm = $("#inquiryForm");
 const inquiryStatus = $("#inquiryStatus");
-
-$("#inquiryTrigger").addEventListener("click", () => {
-  inquiryStatus.textContent = "";
-  inquiryDialog.showModal();
-  $("#inquiryName").focus();
-});
-$("#inquiryClose").addEventListener("click", () => inquiryDialog.close());
-inquiryDialog.addEventListener("click", e => {
-  if (e.target === inquiryDialog) inquiryDialog.close();
-});
 
 async function copyInquiryMessage(text){
   try{
@@ -51,11 +40,7 @@ async function copyInquiryMessage(text){
 inquiryForm.addEventListener("submit", async e => {
   e.preventDefault();
   const data = new FormData(inquiryForm);
-  const message = [
-    data.get("name") && `Name: ${data.get("name").trim()}`,
-    data.get("email") && `Email: ${data.get("email").trim()}`,
-    `Message: ${data.get("message").trim()}`
-  ].filter(Boolean).join("\n");
+  const message = data.get("message").trim();
 
   window.open(MESSENGER_URL, "_blank", "noopener,noreferrer");
 

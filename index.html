@@ -40,7 +40,7 @@
   })();
 </script>
 
-<link rel="stylesheet" href="assets/site.css?v=13">
+<link rel="stylesheet" href="assets/site.css?v=15">
 <noscript><style>
   .preloader{display:none}
   .reveal,.split .line-inner,.hero-roles .line-inner,.hero-name .ch,.kam-quote .qw{opacity:1!important;transform:none!important}
@@ -99,29 +99,6 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
 </div>
-
-<button class="side-inquiry" id="inquiryTrigger" type="button" aria-haspopup="dialog" aria-controls="inquiryDialog" aria-label="Open the inquiry form">
-  <span>Inquiry</span><span aria-hidden="true">↗</span>
-</button>
-
-<dialog class="inquiry-dialog" id="inquiryDialog" aria-labelledby="inquiryTitle">
-  <div class="inquiry-dialog-bar">
-    <h2 id="inquiryTitle">Send an inquiry</h2>
-    <button class="inquiry-close" id="inquiryClose" type="button" aria-label="Close inquiry form">×</button>
-  </div>
-  <p class="inquiry-intro">Share a few details and continue in Messenger.</p>
-  <form id="inquiryForm">
-    <label for="inquiryName">Name</label>
-    <input id="inquiryName" name="name" type="text" autocomplete="name" maxlength="100" placeholder="Your name">
-    <label for="inquiryEmail">Email <span>(optional)</span></label>
-    <input id="inquiryEmail" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com">
-    <label for="inquiryMessage">Message</label>
-    <textarea id="inquiryMessage" name="message" rows="5" maxlength="2000" required placeholder="How can I help?"></textarea>
-    <button class="btn inquiry-send" type="submit">&gt; Send Message ↗</button>
-    <p class="inquiry-status" id="inquiryStatus" role="status" aria-live="polite"></p>
-    <p class="inquiry-note">Your message is copied so you can paste it into the Messenger chat. This form does not submit or store your details. <a href="https://www.messenger.com/e2ee/t/9953194074700086" target="_blank" rel="noopener noreferrer">Open Messenger directly ↗</a></p>
-  </form>
-</dialog>
 
 <main>
 
@@ -343,17 +320,35 @@
 
   <!-- ============ Contact / Footer ============ -->
   <footer id="contact" class="contact">
-    <p class="eyebrow" data-scramble>06 — Contact</p>
-    <h2 class="sec-h contact-h split">Got a site to build or a system to fix?</h2>
-    <p class="contact-body reveal" style="--dur:520ms">Send a message — I reply to every inquiry.</p>
-    <div class="email-wrap reveal" style="--dur:520ms;--delay:90ms">
-      <a class="email" href="mailto:siedel.cabrales@proton.me">siedel.cabrales@proton.me <span class="arrow" aria-hidden="true">↗</span></a>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p class="eyebrow" data-scramble>06 — Contact</p>
+        <h2 class="sec-h contact-h split">Got a site to build or a system to fix?</h2>
+        <p class="contact-body reveal" style="--dur:520ms">Send a message — I reply to every inquiry.</p>
+        <div class="email-wrap reveal" style="--dur:520ms;--delay:90ms">
+          <a class="email" href="mailto:siedel.cabrales@proton.me">siedel.cabrales@proton.me <span class="arrow" aria-hidden="true">↗</span></a>
+        </div>
+        <dl class="contact-lines reveal" style="--dur:520ms;--delay:160ms">
+          <div><dt>TEL</dt><dd><a href="tel:+639692945637">0969 294 5637</a></dd></div>
+          <div><dt>MAIL</dt><dd><a href="mailto:siedel.cabrales@proton.me">siedel.cabrales@proton.me</a></dd></div>
+          <div><dt>LOC</dt><dd>Philippines</dd></div>
+        </dl>
+      </div>
+
+      <aside class="inquiry-panel" id="inquiryPanel" aria-labelledby="inquiryTitle">
+        <div class="inquiry-panel-bar">
+          <h2 id="inquiryTitle">Send an inquiry</h2>
+        </div>
+        <p class="inquiry-intro">Type your inquiry. We’ll open Messenger and copy it for you to paste into the chat.</p>
+        <form id="inquiryForm">
+          <label for="inquiryMessage">Your message</label>
+          <textarea id="inquiryMessage" name="message" rows="7" maxlength="2000" required placeholder="Hi Siedel, I'm interested in your services. I'd like to discuss..."></textarea>
+          <button class="btn inquiry-send" type="submit">&gt; Send Inquiry ↗</button>
+          <p class="inquiry-status" id="inquiryStatus" role="status" aria-live="polite"></p>
+          <p class="inquiry-note">Messenger will open in a new tab. Your message is copied for you to paste and send. This site does not store or send the message automatically. <a href="https://www.messenger.com/e2ee/t/9953194074700086" target="_blank" rel="noopener noreferrer">Open Messenger directly ↗</a></p>
+        </form>
+      </aside>
     </div>
-    <dl class="contact-lines reveal" style="--dur:520ms;--delay:160ms">
-      <div><dt>TEL</dt><dd><a href="tel:+639692945637">0969 294 5637</a></dd></div>
-      <div><dt>MAIL</dt><dd><a href="mailto:siedel.cabrales@proton.me">siedel.cabrales@proton.me</a></dd></div>
-      <div><dt>LOC</dt><dd>Philippines</dd></div>
-    </dl>
 
     <div class="footer-bar">
       <div class="fb-left">
@@ -376,7 +371,7 @@
 
 </main>
 
-<script src="assets/site.js?v=12" defer></script>
+<script src="assets/site.js?v=14" defer></script>
 <script>
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a[href^="mailto:"], a[href^="tel:"]');
