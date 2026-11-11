@@ -343,7 +343,7 @@
         <form id="inquiryForm">
           <label for="inquiryMessage">Your message</label>
           <textarea id="inquiryMessage" name="message" rows="7" maxlength="2000" required placeholder="Hi Siedel, I'm interested in your services. I'd like to discuss..."></textarea>
-          <button class="btn inquiry-send" type="submit">&gt; Send Inquiry ↗</button>
+          <a class="btn inquiry-send" id="inquirySend" href="https://www.messenger.com/e2ee/t/9953194074700086" target="_blank" rel="noopener noreferrer">&gt; Send Inquiry ↗</a>
           <p class="inquiry-status" id="inquiryStatus" role="status" aria-live="polite"></p>
           <p class="inquiry-note">Messenger will open in a new tab. Your message is copied for you to paste and send. This site does not store or send the message automatically. <a href="https://www.messenger.com/e2ee/t/9953194074700086" target="_blank" rel="noopener noreferrer">Open Messenger directly ↗</a></p>
         </form>
@@ -371,7 +371,7 @@
 
 </main>
 
-<script src="assets/site.js?v=14" defer></script>
+<script src="assets/site.js?v=15" defer></script>
 <script>
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a[href^="mailto:"], a[href^="tel:"]');

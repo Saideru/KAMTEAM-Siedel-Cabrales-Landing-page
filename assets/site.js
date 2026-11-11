@@ -9,7 +9,6 @@ const rand = (a, b) => Math.random() * (b - a) + a;
 const ri = (a, b) => Math.floor(rand(a, b + 1));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-const MESSENGER_URL = "https://www.messenger.com/e2ee/t/9953194074700086";
 const inquiryForm = $("#inquiryForm");
 const inquiryStatus = $("#inquiryStatus");
 
@@ -37,18 +36,18 @@ async function copyInquiryMessage(text){
   return copied;
 }
 
-inquiryForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  const data = new FormData(inquiryForm);
-  const message = data.get("message").trim();
-
-  window.open(MESSENGER_URL, "_blank", "noopener,noreferrer");
-
+$("#inquirySend").addEventListener("click", e => {
+  if (!inquiryForm.reportValidity()){
+    e.preventDefault();
+    return;
+  }
+  const message = $("#inquiryMessage").value.trim();
   inquiryStatus.textContent = "Opening Messenger and copying your message…";
-  const copied = await copyInquiryMessage(message);
-  inquiryStatus.textContent = copied
-    ? "Copied. Paste your message into the Messenger chat and send it."
-    : "Messenger opened. Copy your message below and paste it into the chat.";
+  copyInquiryMessage(message).then(copied => {
+    inquiryStatus.textContent = copied
+      ? "Copied. Paste your message into the Messenger chat and send it."
+      : "Messenger opened. Copy your message below and paste it into the chat.";
+  });
 });
 
 $("#year").textContent = new Date().getFullYear();
