@@ -9,6 +9,63 @@ const rand = (a, b) => Math.random() * (b - a) + a;
 const ri = (a, b) => Math.floor(rand(a, b + 1));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+const MESSENGER_URL = "https://www.messenger.com/e2ee/t/9953194074700086";
+const inquiryDialog = $("#inquiryDialog");
+const inquiryForm = $("#inquiryForm");
+const inquiryStatus = $("#inquiryStatus");
+
+$("#inquiryTrigger").addEventListener("click", () => {
+  inquiryStatus.textContent = "";
+  inquiryDialog.showModal();
+  $("#inquiryName").focus();
+});
+$("#inquiryClose").addEventListener("click", () => inquiryDialog.close());
+inquiryDialog.addEventListener("click", e => {
+  if (e.target === inquiryDialog) inquiryDialog.close();
+});
+
+async function copyInquiryMessage(text){
+  try{
+    if (navigator.clipboard && window.isSecureContext){
+      const copied = await Promise.race([
+        navigator.clipboard.writeText(text).then(() => true),
+        new Promise(resolve => setTimeout(() => resolve(false), 1200))
+      ]);
+      if (copied) return true;
+    }
+  }catch{}
+
+  const field = document.createElement("textarea");
+  field.value = text;
+  field.setAttribute("readonly", "");
+  field.style.position = "fixed";
+  field.style.opacity = "0";
+  document.body.appendChild(field);
+  field.select();
+  let copied = false;
+  try{ copied = document.execCommand("copy"); }catch{}
+  field.remove();
+  return copied;
+}
+
+inquiryForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  const data = new FormData(inquiryForm);
+  const message = [
+    data.get("name") && `Name: ${data.get("name").trim()}`,
+    data.get("email") && `Email: ${data.get("email").trim()}`,
+    `Message: ${data.get("message").trim()}`
+  ].filter(Boolean).join("\n");
+
+  window.open(MESSENGER_URL, "_blank", "noopener,noreferrer");
+
+  inquiryStatus.textContent = "Opening Messenger and copying your message…";
+  const copied = await copyInquiryMessage(message);
+  inquiryStatus.textContent = copied
+    ? "Copied. Paste your message into the Messenger chat and send it."
+    : "Messenger opened. Copy your message below and paste it into the chat.";
+});
+
 $("#year").textContent = new Date().getFullYear();
 
 /* ================================================================
