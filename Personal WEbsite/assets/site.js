@@ -9,12 +9,54 @@ const rand = (a, b) => Math.random() * (b - a) + a;
 const ri = (a, b) => Math.floor(rand(a, b + 1));
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+const inquiryForm = $("#inquiryForm");
+const inquiryStatus = $("#inquiryStatus");
+
+async function copyInquiryMessage(text){
+  try{
+    if (navigator.clipboard && window.isSecureContext){
+      const copied = await Promise.race([
+        navigator.clipboard.writeText(text).then(() => true),
+        new Promise(resolve => setTimeout(() => resolve(false), 1200))
+      ]);
+      if (copied) return true;
+    }
+  }catch{}
+
+  const field = document.createElement("textarea");
+  field.value = text;
+  field.setAttribute("readonly", "");
+  field.style.position = "fixed";
+  field.style.opacity = "0";
+  document.body.appendChild(field);
+  field.select();
+  let copied = false;
+  try{ copied = document.execCommand("copy"); }catch{}
+  field.remove();
+  return copied;
+}
+
+$("#inquirySend").addEventListener("click", e => {
+  if (!inquiryForm.reportValidity()){
+    e.preventDefault();
+    return;
+  }
+  const message = $("#inquiryMessage").value.trim();
+  inquiryStatus.textContent = "Opening Messenger and copying your message…";
+  copyInquiryMessage(message).then(copied => {
+    inquiryStatus.textContent = copied
+      ? "Copied. Paste your message into the Messenger chat and send it."
+      : "Messenger opened. Copy your message below and paste it into the chat.";
+  });
+});
+
 $("#year").textContent = new Date().getFullYear();
 
 /* ================================================================
    Data
    ================================================================ */
 const PROJECTS = [
+  { name: "Leadly",               url: "https://leadly-KAMTEAM.vercel.app/",           role: "AI lead platform",   stack: "Next.js / Gemini AI", summary: "Leadly — an AI-powered B2B lead generation platform built for KAM Team. Prospectors describe their ideal client profile; Leadly queries live business sources, scores each match 0–100, and drafts personalised outreach emails ready to send from the Campaign Inbox. Settings let the team define their company positioning, target locations, and active products so the AI engine can refine results on every run." },
   { name: "Solvera",              url: "https://solveraca.com/",                       role: "Client website",     stack: "Next.js / Tailwind", summary: "Solvera CA — business services and corporate site." },
   { name: "Indoor Golf Venture",  url: "https://indoor-golf-venture.vercel.app/",      role: "Venue landing page", stack: "React / Vercel",     summary: "Indoor golf simulator venue — bookings and info." },
   { name: "7i Audio",             url: "https://7i-audio.vercel.app/",                 role: "Brand / e-commerce", stack: "Next.js / Vercel",   summary: "7i Audio — audio equipment brand site." },
@@ -23,14 +65,15 @@ const PROJECTS = [
   { name: "Chaya's Gift Shop",    url: "https://chayas-gift-shop.vercel.app/",         role: "Storefront",         stack: "Next.js / Vercel",   summary: "Chaya's Gift Shop — a curated gift store." },
   { name: "PC-Mon",               url: "https://pc-mon.vercel.app/",                   role: "Service landing",    stack: "Next.js / Tailwind", summary: "PC-Mon — computer and laptop repair in San Pedro." },
   { name: "Lead Generator (N0%1#3)", role: "Lead generation", stack: "Private system", summary: "Confidential internal system — access restricted.", private: true },
-  { name: "Payroll System (Q0%5^6$ 50%4!1#3)", role: "Payroll", stack: "Private system", summary: "Confidential internal system — access restricted.", private: true },
-  { name: "Inventory (S0%6^4#)", role: "Inventory management", stack: "Private system", summary: "Confidential internal system — access restricted.", private: true },
-  { name: "HRIS System (S0%6^4#)", role: "Human resources", stack: "Private system", summary: "Confidential internal system — access restricted.", private: true }
+  { name: "Payroll System (Q0%5^6$ 50%4!1#3)", role: "Payroll & compensation", stack: "Private system", summary: "Internal payroll system built for [REDACTED]. Automates salary computation, deductions, government contributions (SSS, PhilHealth, Pag-IBIG), and net pay calculation per pay period. Generates payslips and payroll summaries for management review — access restricted.", private: true },
+  { name: "Inventory (S0%6^4#)", role: "Inventory management", stack: "Private system", summary: "Internal inventory system tracking stock levels, item movement, and reorder thresholds across [REDACTED] operations. Records incoming and outgoing items with timestamps and generates inventory reports for auditing — access restricted.", private: true },
+  { name: "HRIS System (S0%6^4#)", role: "Human resources", stack: "Private system", summary: "Internal HRIS built for [REDACTED]. Centralises employee records, attendance tracking, leave management, and onboarding workflows. Provides HR with a single dashboard to monitor headcount, generate reports, and manage employee data across departments — access restricted.", private: true }
 ];
 
 const PUBLIC_PROJECTS = PROJECTS.filter(p => !p.private);
-const MARQUEE = ["Full-Stack Development", "Web Design", "Security Auditing", "Database Administration", "IP CCTV",
-                 "Hardware Diagnostics", "Network Monitoring", "Conversational AI", "IT Training", "System Monitoring"];
+const MARQUEE = ["Full-Stack Development", "Web Design", "Graphic Design", "SEO Optimization", "Security Auditing",
+                 "Database Administration", "IP CCTV", "Hardware Diagnostics", "Network Monitoring", "Conversational AI",
+                 "IT Training", "System Monitoring"];
 
 const host = url => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 const projectHost = p => p.private ? "ACCESS RESTRICTED" : host(p.url);
