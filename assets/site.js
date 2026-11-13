@@ -70,8 +70,9 @@ const PROJECTS = [
 ];
 
 const PUBLIC_PROJECTS = PROJECTS.filter(p => !p.private);
-const MARQUEE = ["Full-Stack Development", "Web Design", "Security Auditing", "Database Administration", "IP CCTV",
-                 "Hardware Diagnostics", "Network Monitoring", "Conversational AI", "IT Training", "System Monitoring"];
+const MARQUEE = ["Full-Stack Development", "Web Design", "Graphic Design", "SEO Optimization", "Security Auditing",
+                 "Database Administration", "IP CCTV", "Hardware Diagnostics", "Network Monitoring", "Conversational AI",
+                 "IT Training", "System Monitoring"];
 
 const host = url => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 const projectHost = p => p.private ? "ACCESS RESTRICTED" : host(p.url);
