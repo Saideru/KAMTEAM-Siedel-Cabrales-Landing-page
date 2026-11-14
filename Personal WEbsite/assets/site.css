@@ -457,8 +457,10 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 .ps-name{
   position:absolute;left:1.25rem;right:1.25rem;top:46%;transform:translateY(-50%);
   font-family:var(--font-display);font-size:3.25rem;line-height:0.88;text-transform:uppercase;
-  text-shadow:0 0 18px var(--green-glow);transition:color 340ms ease-out,text-shadow 340ms ease-out;
+  text-shadow:0 0 18px var(--green-glow);opacity:0.45;
+  transition:color 340ms ease-out,text-shadow 340ms ease-out,opacity 340ms ease-out;
 }
+.venture.is-hover .ps-name,.proj-screen:hover .ps-name,.proj-screen:focus-visible .ps-name{opacity:1}
 .ps-meta{position:absolute;left:1.25rem;bottom:1rem;font-size:0.75rem;line-height:1.6;color:var(--muted);white-space:pre;letter-spacing:0.06em}
 .ps-cta{position:absolute;right:1rem;bottom:1rem;z-index:3;font-size:0.6875rem;padding:0.45rem 0.7rem}
 @media (max-width:767.98px){
@@ -868,3 +870,9 @@ html.is-loading .hero-art{opacity:0}
 .kam-panel .kam-cap{margin-top:0}
 .kam-stats{margin:0;width:auto}
 @media (min-width:640px){.kam-stats{margin-left:0}}
+
+/* Contact form: hidden spam trap + sending state */
+.iq-honey{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
+.inquiry-send{cursor:pointer}
+.inquiry-send:disabled{opacity:0.55;cursor:progress}
+.inquiry-status a{color:var(--green);text-decoration:underline}

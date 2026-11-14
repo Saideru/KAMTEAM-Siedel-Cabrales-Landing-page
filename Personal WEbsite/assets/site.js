@@ -12,30 +12,6 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;"
 const inquiryForm = $("#inquiryForm");
 const inquiryStatus = $("#inquiryStatus");
 
-async function copyInquiryMessage(text){
-  try{
-    if (navigator.clipboard && window.isSecureContext){
-      const copied = await Promise.race([
-        navigator.clipboard.writeText(text).then(() => true),
-        new Promise(resolve => setTimeout(() => resolve(false), 1200))
-      ]);
-      if (copied) return true;
-    }
-  }catch{}
-
-  const field = document.createElement("textarea");
-  field.value = text;
-  field.setAttribute("readonly", "");
-  field.style.position = "fixed";
-  field.style.opacity = "0";
-  document.body.appendChild(field);
-  field.select();
-  let copied = false;
-  try{ copied = document.execCommand("copy"); }catch{}
-  field.remove();
-  return copied;
-}
-
 function composeInquiry(){
   const f = new FormData(inquiryForm);
   const v = k => String(f.get(k) || "").trim();
@@ -50,26 +26,66 @@ function composeInquiry(){
   ].filter(line => line !== null).join("\n");
 }
 
-inquiryForm.addEventListener("submit", e => e.preventDefault());
+/* Inquiries are emailed straight to the inbox via FormSubmit (no backend needed).
+   The selected topic goes into the subject line so mail can be sorted/filtered by it. */
+const INQUIRY_TO = "siedel.cabrales@proton.me";
+const INQUIRY_ENDPOINT = `https://formsubmit.co/ajax/${INQUIRY_TO}`;
+const inquirySend = $("#inquirySend");
+
+function inquiryMailto(){
+  const f = new FormData(inquiryForm);
+  const subject = `[KAMTEAM] ${f.get("topic") || "General"} inquiry from ${String(f.get("name") || "").trim()}`;
+  return `mailto:${INQUIRY_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(composeInquiry())}`;
+}
+
+inquiryForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  if (!inquiryForm.reportValidity()) return;
+
+  const f = new FormData(inquiryForm);
+  if (String(f.get("_honey") || "")) return;            // bot filled the hidden trap field
+  const v = k => String(f.get(k) || "").trim();
+  const topic = v("topic") || "General";
+
+  const payload = {
+    _subject: `[KAMTEAM] ${topic} inquiry from ${v("name")}`,
+    _replyto: v("email"),
+    _template: "table",
+    _captcha: "false",
+    Topic: topic,
+    Name: v("name"),
+    Email: v("email"),
+    Company: v("company") || "—",
+    "Service focus": v("focus") || "—",
+    Message: v("message"),
+    Page: location.href
+  };
+
+  inquirySend.disabled = true;
+  inquiryStatus.textContent = "> Transmitting your message…";
+  try{
+    const res = await fetch(INQUIRY_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || String(data.success) !== "true") throw new Error(data.message || `HTTP ${res.status}`);
+
+    inquiryStatus.textContent = `> SENT. Thanks ${v("name").split(" ")[0]} — your ${topic} inquiry is in. I'll reply to ${v("email")} soon.`;
+    if (typeof gtag === "function") gtag("event", "generate_lead", { method: "contact_form", topic });
+    inquiryForm.reset();
+  }catch(err){
+    inquiryStatus.innerHTML = `> Couldn't send right now. <a href="${esc(inquiryMailto())}">Email it instead ↗</a> — your message is pre-filled.`;
+  }finally{
+    inquirySend.disabled = false;
+  }
+});
 
 $$("[data-topic]").forEach(link => link.addEventListener("click", () => {
   const radio = $(`#inquiryForm input[name="topic"][value="${link.dataset.topic}"]`);
   if (radio) radio.checked = true;
 }));
-
-$("#inquirySend").addEventListener("click", e => {
-  if (!inquiryForm.reportValidity()){
-    e.preventDefault();
-    return;
-  }
-  const message = composeInquiry();
-  inquiryStatus.textContent = "Opening Messenger and copying your message…";
-  copyInquiryMessage(message).then(copied => {
-    inquiryStatus.textContent = copied
-      ? "Copied. Paste your message into the Messenger chat and send it."
-      : "Messenger opened. Copy your message below and paste it into the chat.";
-  });
-});
 
 $("#year").textContent = new Date().getFullYear();
 
@@ -181,7 +197,7 @@ if (!projectList.children.length) projectList.innerHTML = PROJECTS.map((p, i) =>
         ${p.img ? `<img class="ps-shot" src="${esc(p.img)}" alt="" loading="lazy" decoding="async" width="960" height="600">` : ""}
         <span class="ps-bar"><span>tty${n} — ${esc(projectHost(p))}</span><span class="ps-live${p.private ? " is-private" : ""}">${p.private ? "PRIVATE" : "LIVE"}</span></span>
         <span class="ps-num" aria-hidden="true">${n}</span>
-        <span class="ps-name" data-final="${esc(p.name)}">${esc(p.name)}</span>
+        <span class="ps-name" data-final="${p.private ? "Restricted" : "Click to Open"}" aria-hidden="true">${p.private ? "Restricted" : "Click to Open"}</span>
         <span class="ps-meta" aria-hidden="true">ROLE   ${esc(p.role)}\nSTACK  ${esc(p.stack)}\nSTATUS ${p.private ? "RESTRICTED" : "DEPLOYED"}</span>
         <span class="btn ps-cta" aria-hidden="true">${p.private ? "&gt; Restricted_" : "&gt; Mount_"}</span>
       </button>
