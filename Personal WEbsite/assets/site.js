@@ -148,10 +148,10 @@ const PROJECTS = [
   { name: "1197 Cafe", img: "assets/projects/1197-cafe.webp",            url: "https://1197-cafe.vercel.app/",                role: "Cafe site",          stack: "Next.js / Vercel",   summary: "1197 Cafe — menu, hours and location." },
   { name: "Chaya's Gift Shop", img: "assets/projects/chayas-gift-shop.webp",    url: "https://chayas-gift-shop.vercel.app/",         role: "Storefront",         stack: "Next.js / Vercel",   summary: "Chaya's Gift Shop — a curated gift store." },
   { name: "PC-Mon", img: "assets/projects/pc-mon.webp",               url: "https://pc-mon.vercel.app/",                   role: "Service landing",    stack: "Next.js / Tailwind", summary: "PC-Mon — computer and laptop repair in San Pedro." },
-  { name: "Lead Generator (N0%1#3)", role: "Lead generation", stack: "Private system", summary: "Confidential internal system — access restricted.", private: true },
-  { name: "Payroll System (Q0%5^6$ 50%4!1#3)", role: "Payroll & compensation", stack: "Private system", summary: "Internal payroll system built for [REDACTED]. Automates salary computation, deductions, government contributions (SSS, PhilHealth, Pag-IBIG), and net pay calculation per pay period. Generates payslips and payroll summaries for management review — access restricted.", private: true },
-  { name: "Inventory (S0%6^4#)", role: "Inventory management", stack: "Private system", summary: "Internal inventory system tracking stock levels, item movement, and reorder thresholds across [REDACTED] operations. Records incoming and outgoing items with timestamps and generates inventory reports for auditing — access restricted.", private: true },
-  { name: "HRIS System (S0%6^4#)", role: "Human resources", stack: "Private system", summary: "Internal HRIS built for [REDACTED]. Centralises employee records, attendance tracking, leave management, and onboarding workflows. Provides HR with a single dashboard to monitor headcount, generate reports, and manage employee data across departments — access restricted.", private: true }
+  { name: "Lead Generator (N0%1#3)", label: "Lead generator — client confidential", role: "Lead generation", stack: "Private system", summary: "Confidential internal system — access restricted.", private: true },
+  { name: "Payroll System (Q0%5^6$ 50%4!1#3)", label: "Payroll system — client confidential", role: "Payroll & compensation", stack: "Private system", summary: "Internal payroll system built for [REDACTED]. Automates salary computation, deductions, government contributions (SSS, PhilHealth, Pag-IBIG), and net pay calculation per pay period. Generates payslips and payroll summaries for management review — access restricted.", private: true },
+  { name: "Inventory (S0%6^4#)", label: "Inventory system — client confidential", role: "Inventory management", stack: "Private system", summary: "Internal inventory system tracking stock levels, item movement, and reorder thresholds across [REDACTED] operations. Records incoming and outgoing items with timestamps and generates inventory reports for auditing — access restricted.", private: true },
+  { name: "HRIS System (S0%6^4#)", label: "HRIS system — client confidential", role: "Human resources", stack: "Private system", summary: "Internal HRIS built for [REDACTED]. Centralises employee records, attendance tracking, leave management, and onboarding workflows. Provides HR with a single dashboard to monitor headcount, generate reports, and manage employee data across departments — access restricted.", private: true }
 ];
 
 const PUBLIC_PROJECTS = PROJECTS.filter(p => !p.private);
@@ -161,6 +161,11 @@ const MARQUEE = ["Full-Stack Development", "Web Design", "Graphic Design", "SEO 
 
 const host = url => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 const projectHost = p => p.private ? "ACCESS RESTRICTED" : host(p.url);
+/* Private projects show a scrambled name for effect; screen readers get the clean `label` instead */
+const a11yName = p => p.label || p.name;
+const nameHTML = p => p.label
+  ? `<span aria-hidden="true">${esc(p.name)}</span><span class="sr-only">${esc(p.label)}</span>`
+  : esc(p.name);
 
 /* ================================================================
    Render projects
@@ -172,7 +177,7 @@ if (!projectList.children.length) projectList.innerHTML = PROJECTS.map((p, i) =>
   const n = String(i + 1).padStart(2, "0");
   return `<li class="reveal" style="--ry:60px;--dur:620ms;--delay:${(i % 2) * 120}ms">
     <article class="venture" data-i="${i}">
-      <button type="button" class="proj-screen" aria-label="Preview ${esc(p.name)}">
+      <button type="button" class="proj-screen" aria-label="Preview ${esc(a11yName(p))}">
         ${p.img ? `<img class="ps-shot" src="${esc(p.img)}" alt="" loading="lazy" decoding="async" width="960" height="600">` : ""}
         <span class="ps-bar"><span>tty${n} — ${esc(projectHost(p))}</span><span class="ps-live${p.private ? " is-private" : ""}">${p.private ? "PRIVATE" : "LIVE"}</span></span>
         <span class="ps-num" aria-hidden="true">${n}</span>
@@ -181,11 +186,11 @@ if (!projectList.children.length) projectList.innerHTML = PROJECTS.map((p, i) =>
         <span class="btn ps-cta" aria-hidden="true">${p.private ? "&gt; Restricted_" : "&gt; Mount_"}</span>
       </button>
       <div class="venture-row">
-        <div><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p></div>
+        <div><h3>${nameHTML(p)}</h3><p>${esc(p.summary)}</p></div>
         <div class="venture-meta">
           <p class="venture-year">Project ${n}</p>
           ${p.private
-            ? `<button type="button" class="btn venture-outcome private-project-link" data-i="${i}">Restricted</button>`
+            ? `<button type="button" class="btn venture-outcome private-project-link" data-i="${i}" aria-label="${esc(a11yName(p))}: access restricted, show notice">Restricted</button>`
             : `<a class="btn venture-outcome" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">Visit ↗</a>`}
         </div>
       </div>
@@ -542,7 +547,7 @@ function openPrivacyNotice(p){
       <span class="fx-win-actions"><button type="button" aria-label="Close notice">x</button></span>
     </div>
     <div class="fx-privacy-body">
-      <p class="fx-privacy-project">${esc(p.name)} // PRIVATE NODE</p>
+      <p class="fx-privacy-project">${nameHTML(p)} // PRIVATE NODE</p>
       <p>This program and all its contents are strictly confidential and intended only for authorized personnel. Unauthorized viewing, screen-sharing, recording, or distribution of this system is prohibited. All user activity is monitored to ensure security and compliance.</p>
       <p class="fx-privacy-disclaimer">This portfolio does not authenticate visitors or monitor their activity. Private system links and previews are intentionally omitted.</p>
       <p class="fx-privacy-status">&gt; ACCESS BLOCKED — NO PROJECT LINK OR PREVIEW IS AVAILABLE.</p>
@@ -582,7 +587,7 @@ function openProjects(){
   const rows = PROJECTS.map((p, i) => {
     const n = String(i + 1).padStart(2, "0");
     if (p.private){
-      return `<button type="button" class="fx-proj-line fx-proj-line-button" data-i="${i}" style="animation-delay:${i * 60}ms">` +
+      return `<button type="button" class="fx-proj-line fx-proj-line-button" data-i="${i}" aria-label="${esc(a11yName(p))}, access restricted" style="animation-delay:${i * 60}ms">` +
              `<span class="idx">[${n}]</span>&gt; ${esc(p.name)}<span class="host">// ACCESS RESTRICTED</span></button>`;
     }
     return `<a class="fx-proj-line" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" data-i="${i}" style="animation-delay:${i * 60}ms">` +

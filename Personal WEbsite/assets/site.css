@@ -530,31 +530,6 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 }
 .kam-cap{margin-top:1.25rem;font-size:0.8125rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
 
-/* Radar (from the 80's UI) */
-.radar{
-  position:relative;width:min(100%,24rem);aspect-ratio:1/1;border:1px solid var(--green);border-radius:50%;
-  overflow:hidden;background:radial-gradient(circle at center,rgba(14,60,76,0.4) 0%,rgba(0,0,0,0.85) 70%);
-  box-shadow:inset 0 0 40px rgba(109,241,255,0.15),0 0 20px rgba(109,241,255,0.2);
-}
-.radarGrid{
-  position:absolute;inset:0;
-  background:
-    repeating-linear-gradient(0deg,transparent 0 calc(10% - 1px),rgba(109,241,255,0.2) calc(10% - 1px) 10%),
-    repeating-linear-gradient(90deg,transparent 0 calc(10% - 1px),rgba(109,241,255,0.2) calc(10% - 1px) 10%);
-}
-.radar::before,.radar::after{content:"";position:absolute;border:1px solid rgba(109,241,255,0.4);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%)}
-.radar::before{width:66%;height:66%}
-.radar::after{width:33%;height:33%}
-.radarSweep{
-  position:absolute;inset:0;mix-blend-mode:screen;animation:sweep 3.5s linear infinite;
-  background:conic-gradient(from 0deg,rgba(109,241,255,0.55) 0deg,rgba(109,241,255,0.15) 20deg,transparent 60deg,transparent 360deg);
-}
-.blip{
-  position:absolute;left:var(--x);top:var(--y);width:6px;height:6px;border-radius:50%;
-  background:var(--green);box-shadow:0 0 8px var(--green),0 0 16px var(--green);
-  transform:translate(-50%,-50%);opacity:0;animation:blipFade 3.5s ease-out infinite;animation-delay:var(--d,0s);
-}
-
 /* ================= Contact / Footer ================= */
 .contact{position:relative;padding-top:var(--section);padding-inline:var(--gutter)}
 .contact-grid{display:grid;grid-template-columns:1fr;gap:3rem;align-items:start}
@@ -879,3 +854,17 @@ html.is-loading .hero-art{opacity:0}
 .hero-stats dt{color:var(--muted)}
 .hero-stats dd{margin:0;color:#e9fdff;text-shadow:0 0 6px var(--green-glow)}
 @media (min-width:640px){.hero-stats{margin-left:auto}}
+
+/* Screen-reader-only text (visually hidden, still announced) */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* KAM Team panel (replaces the radar): mini logo top-left, then the quick facts */
+.kam-panel{
+  align-items:stretch;width:100%;max-width:30rem;justify-self:end;padding:1.25rem 1.5rem 1.5rem;
+  border:1px solid var(--line-strong);background:var(--surface);box-shadow:inset 0 0 30px rgba(14,74,90,0.25),0 0 18px rgba(109,241,255,0.12);
+}
+.kam-panel-head{display:flex;align-items:center;gap:0.85rem;padding-bottom:1rem;margin-bottom:1.25rem;border-bottom:1px dashed var(--line-strong)}
+.kam-mark-mini{width:1.6rem;flex-shrink:0;filter:drop-shadow(0 0 6px var(--green-glow))}
+.kam-panel .kam-cap{margin-top:0}
+.kam-stats{margin:0;width:auto}
+@media (min-width:640px){.kam-stats{margin-left:0}}
