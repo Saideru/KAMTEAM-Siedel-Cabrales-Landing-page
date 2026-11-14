@@ -76,6 +76,7 @@ inquiryForm.addEventListener("submit", async e => {
     if (typeof gtag === "function") gtag("event", "generate_lead", { method: "contact_form", topic });
     inquiryForm.reset();
   }catch(err){
+    console.warn("[inquiry] FormSubmit rejected the message:", err.message);
     inquiryStatus.innerHTML = `> Couldn't send right now. <a href="${esc(inquiryMailto())}">Email it instead ↗</a> — your message is pre-filled.`;
   }finally{
     inquirySend.disabled = false;

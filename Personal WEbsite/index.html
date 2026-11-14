@@ -97,7 +97,7 @@
   })();
 </script>
 
-<link rel="stylesheet" href="assets/site.css?v=23">
+<link rel="stylesheet" href="assets/site.css?v=24">
 <style>
   @keyframes btnGlowPulse {
     0%,100% { box-shadow: 0 0 6px #6df1ff, 0 0 14px rgba(109,241,255,.55), 0 0 28px rgba(109,241,255,.35); text-shadow: 0 0 6px #6df1ff; }
@@ -756,13 +756,16 @@ STATUS RESTRICTED</span>
         <div class="kam-panel-head">
           <span class="kam-mark kam-mark-mini" role="img" aria-label="KAM Team logo"></span>
           <p class="kam-cap">KAM TEAM &mdash; LINKED</p>
+          <span class="kam-online" aria-hidden="true">ONLINE</span>
         </div>
-        <dl class="hero-stats kam-stats">
-          <div><dt>Since</dt><dd>4+ years</dd></div>
-          <div><dt>Team</dt><dd>50+ professionals</dd></div>
-          <div><dt>Services</dt><dd>7 specialties</dd></div>
-          <div><dt>Hours</dt><dd>US, Europe &amp; Australia business hours</dd></div>
+        <dl class="kam-stats">
+          <div><dt>Since</dt><dd><b>4+</b> years</dd></div>
+          <div><dt>Team</dt><dd><b>50+</b> professionals</dd></div>
+          <div><dt>Services</dt><dd><b>7</b> specialties</dd></div>
+          <div><dt>Coverage</dt><dd><b>3</b> regions</dd></div>
+          <div class="kam-stat-wide"><dt>Hours</dt><dd>US, Europe &amp; Australia business hours</dd></div>
         </dl>
+        <span class="kam-corner tl" aria-hidden="true"></span><span class="kam-corner br" aria-hidden="true"></span>
       </div>
     </div>
   </section>
@@ -861,7 +864,7 @@ STATUS RESTRICTED</span>
 
 </main>
 
-<script src="assets/site.js?v=22" defer></script>
+<script src="assets/site.js?v=23" defer></script>
 <script>
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a[href^="mailto:"], a[href^="tel:"]');

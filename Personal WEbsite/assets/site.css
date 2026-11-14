@@ -862,14 +862,36 @@ html.is-loading .hero-art{opacity:0}
 
 /* KAM Team panel (replaces the radar): mini logo top-left, then the quick facts */
 .kam-panel{
-  align-items:stretch;width:100%;max-width:30rem;justify-self:end;padding:1.25rem 1.5rem 1.5rem;
-  border:1px solid var(--line-strong);background:var(--surface);box-shadow:inset 0 0 30px rgba(14,74,90,0.25),0 0 18px rgba(109,241,255,0.12);
+  align-items:stretch;width:100%;max-width:36rem;justify-self:end;padding:1.75rem 2rem 2rem;
+  border:1px solid var(--line-strong);
+  background:linear-gradient(160deg,rgba(14,74,90,0.28),transparent 55%),var(--surface);
+  box-shadow:inset 0 0 40px rgba(14,74,90,0.3),0 0 28px rgba(109,241,255,0.14);
+  transition:box-shadow 400ms ease-out,border-color 400ms ease-out;
 }
-.kam-panel-head{display:flex;align-items:center;gap:0.85rem;padding-bottom:1rem;margin-bottom:1.25rem;border-bottom:1px dashed var(--line-strong)}
-.kam-mark-mini{width:1.6rem;flex-shrink:0;filter:drop-shadow(0 0 6px var(--green-glow))}
-.kam-panel .kam-cap{margin-top:0}
-.kam-stats{margin:0;width:auto}
-@media (min-width:640px){.kam-stats{margin-left:0}}
+.kam-panel:hover{border-color:var(--green);box-shadow:inset 0 0 50px rgba(14,74,90,0.4),0 0 36px rgba(109,241,255,0.24)}
+.kam-corner{position:absolute;width:18px;height:18px;border:2px solid var(--green);pointer-events:none;filter:drop-shadow(0 0 4px var(--green-glow))}
+.kam-corner.tl{top:-2px;left:-2px;border-right:0;border-bottom:0}
+.kam-corner.br{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.kam-panel-head{display:flex;align-items:center;gap:1rem;padding-bottom:1.25rem;margin-bottom:1.5rem;border-bottom:1px dashed var(--line-strong)}
+.kam-mark-mini{width:2.25rem;flex-shrink:0;filter:drop-shadow(0 0 8px var(--green-glow))}
+.kam-panel .kam-cap{margin-top:0;font-size:0.9375rem;color:var(--accent)}
+.kam-online{margin-left:auto;font-size:0.6875rem;letter-spacing:0.18em;color:var(--green);white-space:nowrap}
+.kam-online::before{content:"◉ ";animation:blink 1.1s steps(1) infinite}
+.kam-stats{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.75rem}
+.kam-stats > div{
+  padding:0.9rem 1rem;border:1px solid var(--line-strong);background:rgba(0,0,0,0.25);
+  transition:border-color 300ms ease-out,background 300ms ease-out;
+}
+.kam-stats > div:hover{border-color:var(--green);background:rgba(14,74,90,0.25)}
+.kam-stats .kam-stat-wide{grid-column:1 / -1}
+.kam-stats dt{font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+.kam-stats dd{margin:0.35rem 0 0;font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;line-height:1.35;color:#e9fdff}
+.kam-stats dd b{
+  display:block;font-family:var(--font-display);font-weight:400;font-size:2.75rem;line-height:1;letter-spacing:0.02em;
+  color:var(--green);text-shadow:0 0 14px var(--green-glow)
+}
+@media (max-width:639.98px){.kam-panel{padding:1.25rem}.kam-stats dd b{font-size:2.25rem}}
+.rm .kam-online::before{animation:none}
 
 /* Contact form: hidden spam trap + sending state */
 .iq-honey{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
