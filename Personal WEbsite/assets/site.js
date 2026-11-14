@@ -582,10 +582,10 @@ function openProjects(){
   const rows = PROJECTS.map((p, i) => {
     const n = String(i + 1).padStart(2, "0");
     if (p.private){
-      return `<button type="button" class="fx-proj-line fx-proj-line-button" data-i="${i}" style="animation-delay:${450 + i * 60}ms">` +
+      return `<button type="button" class="fx-proj-line fx-proj-line-button" data-i="${i}" style="animation-delay:${i * 60}ms">` +
              `<span class="idx">[${n}]</span>&gt; ${esc(p.name)}<span class="host">// ACCESS RESTRICTED</span></button>`;
     }
-    return `<a class="fx-proj-line" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" data-i="${i}" style="animation-delay:${450 + i * 60}ms">` +
+    return `<a class="fx-proj-line" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" data-i="${i}" style="animation-delay:${i * 60}ms">` +
            `<span class="idx">[${n}]</span>&gt; ${esc(p.name)}<span class="host">// ${esc(projectHost(p))}</span></a>`;
   }).join("");
 
@@ -595,15 +595,27 @@ function openProjects(){
       <span class="fx-win-actions"><button type="button" aria-label="Close projects">x</button></span>
     </div>
     <div class="fx-proj-body">
-      <div class="fx-proj-cmd">siedel@node-07:~$ <span class="fx-proj-typed"></span><span class="cursor">▮</span></div>
-      ${rows}
+      <button type="button" class="fx-proj-cmd" aria-expanded="false" aria-controls="fxProjList">siedel@node-07:~$ <span class="fx-proj-typed"></span><span class="cursor">▮</span><span class="fx-proj-hint">[ click to run ]</span></button>
+      <div class="fx-proj-list" id="fxProjList" hidden>${rows}</div>
     </div>
-    <div class="fx-proj-foot">// ${PROJECTS.length} NODES &middot; SELECT PRIVATE NODE FOR NOTICE</div>`;
+    <div class="fx-proj-foot">// ${PROJECTS.length} PROJECTS &middot; CLICK THE COMMAND TO LIST THEM</div>`;
   document.body.appendChild(win);
 
   const typed = win.querySelector(".fx-proj-typed");
+  const cmdBtn = win.querySelector(".fx-proj-cmd");
+  const list = win.querySelector(".fx-proj-list");
   const cmd = "ls /projects";
   [...cmd].forEach((c, i) => setTimeout(() => { typed.textContent += c; }, REDUCED ? 0 : i * 30));
+
+  // Clicking the prompt "runs" ls /projects: toggles the project list open/closed
+  cmdBtn.addEventListener("click", () => {
+    const open = list.hidden;
+    if (open) typed.textContent = cmd;            // finish typing if clicked mid-animation
+    list.hidden = !open;
+    cmdBtn.setAttribute("aria-expanded", String(open));
+    win.classList.toggle("is-listed", open);
+    if (open) list.querySelector(".fx-proj-line")?.focus({ preventScroll: true });
+  });
 
   win.querySelector(".fx-win-actions button").addEventListener("click", () => closeWin(win));
   win.addEventListener("click", e => {
@@ -613,7 +625,7 @@ function openProjects(){
     mountProject(PROJECTS[Number(row.dataset.i)]);
   });
   makeDraggable(win);
-  win.querySelector(".fx-win-actions button").focus({ preventScroll: true });
+  cmdBtn.focus({ preventScroll: true });
 }
 
 function openSideLog(p){

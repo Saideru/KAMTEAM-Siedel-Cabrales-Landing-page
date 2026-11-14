@@ -643,7 +643,14 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 /* Projects console + side meta log (from the 80's UI) */
 .fx-projects{max-height:68vh;min-height:160px}
 .fx-proj-body{flex:1;overflow-y:auto;padding:6px 0;font-size:13px}
-.fx-proj-cmd{padding:2px 10px 8px;color:var(--green-dim)}
+.fx-proj-cmd{
+  display:block;width:100%;padding:6px 10px 8px;text-align:left;background:none;border:0;border-left:2px solid transparent;
+  color:var(--green-dim);font:inherit;cursor:pointer;transition:background 0.2s,color 0.2s,border-color 0.2s;
+}
+.fx-proj-cmd:hover,.fx-proj-cmd:focus-visible{background:rgba(109,241,255,0.1);border-left-color:var(--green);color:#fff;outline:none}
+.fx-proj-hint{margin-left:10px;font-size:0.85em;letter-spacing:0.1em;color:var(--accent);text-shadow:0 0 6px var(--accent-glow);animation:blink 1.1s steps(1) infinite}
+.fx-projects.is-listed .fx-proj-hint{display:none}
+.fx-projects:not(.is-listed){min-height:0}
 .fx-proj-line{
   display:block;padding:4px 10px;letter-spacing:0.06em;border-left:2px solid transparent;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 0 4px var(--green-glow);
@@ -861,3 +868,14 @@ html.is-loading .hero-art{opacity:0}
 .proj-screen:has(.ps-shot) .ps-name{text-shadow:0 0 18px var(--green-glow),0 2px 14px #000,0 0 4px #000}
 .venture.is-hover .ps-shot,.proj-screen:hover .ps-shot,.proj-screen:focus-visible .ps-shot{filter:brightness(0.62) saturate(0.95);opacity:0.9;transform:scale(1.035)}
 .rm .ps-shot{transition:none}
+
+/* Hero quick-facts, under the status line */
+.hero-stats{
+  display:grid;grid-template-columns:auto auto;column-gap:1.5rem;row-gap:0.45rem;
+  width:max-content;max-width:100%;margin-top:1.25rem;text-align:left;
+  font-size:0.875rem;letter-spacing:0.14em;text-transform:uppercase;line-height:1.3;
+}
+.hero-stats > div{display:contents}
+.hero-stats dt{color:var(--muted)}
+.hero-stats dd{margin:0;color:#e9fdff;text-shadow:0 0 6px var(--green-glow)}
+@media (min-width:640px){.hero-stats{margin-left:auto}}
