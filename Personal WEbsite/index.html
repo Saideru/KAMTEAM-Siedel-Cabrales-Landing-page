@@ -48,6 +48,18 @@
 </script>
 
 <link rel="stylesheet" href="assets/site.css?v=15">
+<style>
+  @keyframes btnGlowPulse {
+    0%,100% { box-shadow: 0 0 6px #6df1ff, 0 0 14px rgba(109,241,255,.55), 0 0 28px rgba(109,241,255,.35); text-shadow: 0 0 6px #6df1ff; }
+    50%     { box-shadow: 0 0 12px #6df1ff, 0 0 26px rgba(109,241,255,.85), 0 0 52px rgba(109,241,255,.55); text-shadow: 0 0 10px #6df1ff, 0 0 20px rgba(109,241,255,.7); }
+  }
+  .hero-services {
+    border-color: #6df1ff !important;
+    color: #6df1ff !important;
+    animation: btnGlowPulse 2.2s ease-in-out infinite;
+  }
+  .hero-services:hover { filter: brightness(1.2); }
+</style>
 <noscript><style>
   .preloader{display:none}
   .reveal,.split .line-inner,.hero-roles .line-inner,.hero-name .ch,.kam-quote .qw{opacity:1!important;transform:none!important}
@@ -83,9 +95,8 @@
     </a>
     <ul class="nav-links">
       <li><a href="#profile">Profile</a></li>
-      <li><a href="#skills">Skills</a></li>
+      <li><a href="#services">Services To Be Offered</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#services">Services</a></li>
       <li><a href="#kam">KAM Team</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -99,9 +110,8 @@
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <ul>
     <li><a href="#profile">Profile</a></li>
-    <li><a href="#skills">Skills</a></li>
+    <li><a href="#services">Services To Be Offered</a></li>
     <li><a href="#projects">Projects</a></li>
-    <li><a href="#services">Services</a></li>
     <li><a href="#kam">KAM Team</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -156,19 +166,19 @@
       <ul class="story-right">
         <li class="principle reveal" style="--delay:0ms">
           <span class="principle-num">01</span>
-          <div><h3>Build it clean</h3><p>Readable code, fast pages, honest design. Websites that load quickly and stay easy to maintain long after launch day.</p></div>
+          <div><h3>Understand the problem</h3><p>I start with the outcome you want and what's standing in the way. I listen, ask and get to the root of what needs to improve.</p></div>
         </li>
         <li class="principle reveal" style="--delay:90ms">
           <span class="principle-num">02</span>
-          <div><h3>Keep it running</h3><p>Monitoring, maintenance and diagnostics. I care about uptime as much as I care about shipping.</p></div>
+          <div><h3>Design the solution</h3><p>I map the right mix of people, process and AI to reach that outcome: a clear plan built around your business.</p></div>
         </li>
         <li class="principle reveal" style="--delay:180ms">
           <span class="principle-num">03</span>
-          <div><h3>Secure by default</h3><p>Security isn't an add-on. Sites, systems, networks and cameras are set up with protection in mind from the start.</p></div>
+          <div><h3>Implement with AI</h3><p>My team and AI work together, automating the repetitive and executing the complex with speed and care.</p></div>
         </li>
         <li class="principle reveal" style="--delay:270ms">
           <span class="principle-num">04</span>
-          <div><h3>People first</h3><p>Supervising teams, training users and working closely with clients — so the technology actually serves the people using it.</p></div>
+          <div><h3>Deliver and improve</h3><p>I track progress against the goal, report clearly and keep refining. The relationship is built for the long term.</p></div>
         </li>
       </ul>
     </div>
