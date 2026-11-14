@@ -60,14 +60,23 @@
   }
   .hero-services:hover { filter: brightness(1.2); }
 
-  .solve-grid { margin-top: 4rem; display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
-  @media (min-width: 900px) { .solve-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .solve-grid {
+    margin-top: 4rem; display: flex; gap: 1.25rem; overflow-x: auto;
+    scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none;
+  }
+  .solve-grid::-webkit-scrollbar { display: none; }
   .solve-card {
+    flex: 0 0 100%; min-width: 0; scroll-snap-align: start;
     display: flex; flex-direction: column; padding: 0 0 1.5rem;
     border: 1px solid var(--line-strong); background: var(--surface);
     box-shadow: inset 0 0 30px rgba(14,74,90,0.2);
     transition: border-color .25s, box-shadow .25s;
   }
+  @media (min-width: 640px) { .solve-card { flex-basis: calc((100% - 1.25rem) / 2); } }
+  @media (min-width: 900px) { .solve-card { flex-basis: calc((100% - 2.5rem) / 3); } }
+  .solve-controls { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 1.25rem; }
+  .solve-arrow { cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { .solve-grid { scroll-behavior: auto; } }
   .solve-card:hover { border-color: #6df1ff; box-shadow: inset 0 0 30px rgba(14,74,90,0.3), 0 0 18px rgba(109,241,255,.35); }
   .solve-head {
     display: flex; justify-content: space-between; padding: .75rem 1.5rem;
@@ -215,12 +224,13 @@
     <div class="sec-head">
       <div>
         <p class="eyebrow" data-scramble>02 — What We Solve</p>
-        <h2 class="sec-h plain-h split">Three problems that stall growth.</h2>
+        <h2 class="sec-h plain-h split" id="solve-heading">Six problems that stall growth.</h2>
       </div>
-      <p class="sec-label">ISSUES.LOG // 03 RESOLVED</p>
+      <p class="sec-label">ISSUES.LOG // 06 RESOLVED</p>
     </div>
 
-    <ul class="solve-grid">
+    <div class="solve-carousel" role="region" aria-roledescription="carousel" aria-labelledby="solve-heading">
+    <ul class="solve-grid" id="solveCarousel" aria-label="Problems we solve">
       <li class="solve-card reveal" style="--delay:0ms">
         <header class="solve-head"><span>&gt;&gt; ERR.01</span><span>MARKETING</span></header>
         <h3>Marketing that doesn't bring leads</h3>
@@ -239,7 +249,30 @@
         <p class="solve-pain">Follow-ups slip, data lives in scattered spreadsheets and your team spends hours on work a system should do.</p>
         <p class="solve-fix"><b>&gt; FIX:</b> AI automation and custom business systems that follow up, report and run on their own.</p>
       </li>
+      <li class="solve-card reveal" style="--delay:360ms">
+        <header class="solve-head"><span>&gt;&gt; ERR.04</span><span>DATA</span></header>
+        <h3>Blind spots in performance</h3>
+        <p class="solve-pain">You're making decisions off gut feelings because traffic, ad spend, and sales numbers live in disconnected tools with zero visibility.</p>
+        <p class="solve-fix"><b>&gt; FIX:</b> Live executive dashboards and automated analytics pipelines that track every lead source, conversion rate, and ROI metric in real time.</p>
+      </li>
+      <li class="solve-card reveal" style="--delay:480ms">
+        <header class="solve-head"><span>&gt;&gt; ERR.05</span><span>RETENTION</span></header>
+        <h3>Clients that buy once and vanish</h3>
+        <p class="solve-pain">You work hard to win a customer, then lose them after delivery because there's no system for check-ins, upsells, or referral loops.</p>
+        <p class="solve-fix"><b>&gt; FIX:</b> Automated post-sale onboarding, client portals, and lifecycle workflows that turn one-time buyers into recurring revenue.</p>
+      </li>
+      <li class="solve-card reveal" style="--delay:600ms">
+        <header class="solve-head"><span>&gt;&gt; ERR.06</span><span>INFRASTRUCTURE</span></header>
+        <h3>Tech stacks that break at scale</h3>
+        <p class="solve-pain">Slow legacy sites, duct-taped plugins, and clunky tools bottleneck your team every time you try to launch something new or handle higher volume.</p>
+        <p class="solve-fix"><b>&gt; FIX:</b> Fast, custom-engineered web apps, unified databases, and API integrations built to scale cleanly without technical debt.</p>
+      </li>
     </ul>
+    <div class="solve-controls">
+      <button type="button" class="btn solve-arrow" id="solvePrev" aria-label="Previous problems" aria-controls="solveCarousel">&lt; Previous</button>
+      <button type="button" class="btn solve-arrow" id="solveNext" aria-label="Next problems" aria-controls="solveCarousel">Next &gt;</button>
+    </div>
+    </div>
   </section>
 
   <!-- ============ Services ============ -->

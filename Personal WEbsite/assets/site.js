@@ -74,6 +74,62 @@ $("#inquirySend").addEventListener("click", e => {
 $("#year").textContent = new Date().getFullYear();
 
 /* ================================================================
+   What We Solve carousel
+   ================================================================ */
+(() => {
+  const carousel = $(".solve-carousel");
+  const track = $("#solveCarousel");
+  const previous = $("#solvePrev");
+  const next = $("#solveNext");
+  if (!carousel || !track || !previous || !next) return;
+
+  const cards = $$(".solve-card", track);
+  const AUTOPLAY_MS = 6500;
+  let timer = 0, inView = false, hovering = false, focused = false;
+
+  function canAutoplay(){
+    return !REDUCED && inView && !document.hidden && !hovering && !focused;
+  }
+
+  function schedule(){
+    clearTimeout(timer);
+    if (canAutoplay()) timer = setTimeout(() => {
+      move(1);
+      schedule();
+    }, AUTOPLAY_MS);
+  }
+
+  function move(direction){
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    if (maxScroll <= 0 || !cards.length) return;
+    const stride = cards.length > 1
+      ? cards[1].offsetLeft - cards[0].offsetLeft
+      : cards[0].getBoundingClientRect().width;
+    if (!stride) return;
+
+    const current = track.scrollLeft;
+    const target = direction > 0
+      ? (current + stride >= maxScroll - 1 ? 0 : current + stride)
+      : (current - stride <= 1 ? maxScroll : current - stride);
+    track.scrollTo({ left: target, behavior: REDUCED ? "auto" : "smooth" });
+  }
+
+  previous.addEventListener("click", () => { move(-1); schedule(); });
+  next.addEventListener("click", () => { move(1); schedule(); });
+  carousel.addEventListener("pointerenter", () => { hovering = true; schedule(); });
+  carousel.addEventListener("pointerleave", () => { hovering = false; schedule(); });
+  carousel.addEventListener("focusin", () => { focused = true; schedule(); });
+  carousel.addEventListener("focusout", event => {
+    if (!carousel.contains(event.relatedTarget)) { focused = false; schedule(); }
+  });
+  document.addEventListener("visibilitychange", schedule);
+  new IntersectionObserver(([entry]) => {
+    inView = entry.isIntersecting;
+    schedule();
+  }, { threshold: 0.2 }).observe(carousel);
+})();
+
+/* ================================================================
    AI Creatives player — items with data-src play video, others show a title card
    ================================================================ */
 (() => {
