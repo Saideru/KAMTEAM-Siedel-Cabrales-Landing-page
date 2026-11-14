@@ -397,6 +397,7 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 /* ================= Services ================= */
 .service-grid{margin-top:4rem;display:grid;grid-template-columns:1fr;gap:1.25rem}
 @media (min-width:640px){.service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:900px){.service-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .service-card{
   position:relative;min-height:12.5rem;padding:1.5rem;border:1px solid var(--line-strong);
   background:var(--surface);box-shadow:inset 0 0 30px rgba(14,74,90,0.2);
@@ -404,11 +405,6 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 .service-num{font-family:var(--font-display);font-size:2rem;color:var(--accent);text-shadow:0 0 8px var(--accent-glow)}
 .service-card h3{margin-top:1rem;font-family:var(--font-display);font-size:2.2rem;font-weight:400;line-height:1;text-transform:uppercase;text-shadow:0 0 8px var(--green-glow)}
 .service-card p{margin-top:0.75rem;max-width:42ch;font-size:0.9375rem;line-height:1.6;color:var(--muted)}
-@media (min-width:640px){
-  .service-card:nth-child(2){transform:translateY(2rem)}
-  .service-card:nth-child(3){transform:translateY(1rem)}
-  .service-card:nth-child(4){transform:translateY(3rem)}
-}
 .service-card-ai{
   border-color:#b8fbff;
   background:linear-gradient(135deg,rgba(109,241,255,0.26),rgba(8,44,58,0.82));

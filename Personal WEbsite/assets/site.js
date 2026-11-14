@@ -74,61 +74,6 @@ $("#inquirySend").addEventListener("click", e => {
 $("#year").textContent = new Date().getFullYear();
 
 /* ================================================================
-   Card carousels
-   ================================================================ */
-$$("[data-card-carousel]").forEach(carousel => {
-  const track = $("[data-carousel-track]", carousel);
-  const previous = $("[data-carousel-prev]", carousel);
-  const next = $("[data-carousel-next]", carousel);
-  if (!track || !previous || !next) return;
-
-  const cards = Array.from(track.children);
-  const AUTOPLAY_MS = 6500;
-  let timer = 0, inView = false, hovering = false, focused = false;
-
-  function canAutoplay(){
-    return !REDUCED && inView && !document.hidden && !hovering && !focused;
-  }
-
-  function schedule(){
-    clearTimeout(timer);
-    if (canAutoplay()) timer = setTimeout(() => {
-      move(1);
-      schedule();
-    }, AUTOPLAY_MS);
-  }
-
-  function move(direction){
-    const maxScroll = track.scrollWidth - track.clientWidth;
-    if (maxScroll <= 0 || !cards.length) return;
-    const stride = cards.length > 1
-      ? cards[1].offsetLeft - cards[0].offsetLeft
-      : cards[0].getBoundingClientRect().width;
-    if (!stride) return;
-
-    const current = track.scrollLeft;
-    const target = direction > 0
-      ? (current >= maxScroll - 1 ? 0 : Math.min(current + stride, maxScroll))
-      : (current <= 1 ? maxScroll : Math.max(current - stride, 0));
-    track.scrollTo({ left: target, behavior: REDUCED ? "auto" : "smooth" });
-  }
-
-  previous.addEventListener("click", () => { move(-1); schedule(); });
-  next.addEventListener("click", () => { move(1); schedule(); });
-  carousel.addEventListener("pointerenter", () => { hovering = true; schedule(); });
-  carousel.addEventListener("pointerleave", () => { hovering = false; schedule(); });
-  carousel.addEventListener("focusin", () => { focused = true; schedule(); });
-  carousel.addEventListener("focusout", event => {
-    if (!carousel.contains(event.relatedTarget)) { focused = false; schedule(); }
-  });
-  document.addEventListener("visibilitychange", schedule);
-  new IntersectionObserver(([entry]) => {
-    inView = entry.isIntersecting;
-    schedule();
-  }, { threshold: 0.2 }).observe(carousel);
-});
-
-/* ================================================================
    AI Creatives player — items with data-src play video, others show a title card
    ================================================================ */
 (() => {
@@ -872,9 +817,9 @@ function finishPreload(){
     `           ${esc(roles.slice(3).join(" · "))}`,
     "  STATUS   <ok>AVAILABLE FOR PROJECTS</ok>",
     "",
-    `<ac>&gt; MOUNTING /solve ............. ${String($$(".solve-card").length).padStart(2, "0")} OK</ac>`
+    `<ac>&gt; MOUNTING /solve ............. ${String($$("#solveCarousel .solve-card").length).padStart(2, "0")} OK</ac>`
   ];
-  $$(".solve-card").forEach((card, i) => {
+  $$("#solveCarousel .solve-card").forEach((card, i) => {
     INFO.push(`  [${String(i + 1).padStart(2, "0")}] ${esc(card.querySelector("h3").textContent.toUpperCase())} <ok>RESOLVED</ok>`);
   });
   INFO.push("", `<ac>&gt; MOUNTING /projects .......... ${String(PROJECTS.length).padStart(2, "0")} OK</ac>`);
