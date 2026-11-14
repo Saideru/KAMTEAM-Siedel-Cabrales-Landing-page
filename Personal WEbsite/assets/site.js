@@ -139,15 +139,15 @@ $("#year").textContent = new Date().getFullYear();
    Data
    ================================================================ */
 const PROJECTS = [
-  { name: "Leadly",               url: "https://leadly-KAMTEAM.vercel.app/",           role: "AI lead platform",   stack: "Next.js / Gemini AI", summary: "Leadly — an AI-powered B2B lead generation platform built for KAM Team. Prospectors describe their ideal client profile; Leadly queries live business sources, scores each match 0–100, and drafts personalised outreach emails ready to send from the Campaign Inbox. Settings let the team define their company positioning, target locations, and active products so the AI engine can refine results on every run." },
-  { name: "Solvera",              url: "https://solveraca.com/",                       role: "Client website",     stack: "Next.js / Tailwind", summary: "Solvera CA — business services and corporate site." },
-  { name: "Igneo Cafe",           url: "https://igneo-cafe.vercel.app/",               role: "Cafe / bar site",    stack: "React / Vite / Tailwind", summary: "Igneo Cafe — Mexican-inspired cafe and bar in Mandaluyong." },
-  { name: "Indoor Golf Venture",  url: "https://indoor-golf-venture.vercel.app/",      role: "Venue landing page", stack: "React / Vercel",     summary: "Indoor golf simulator venue — bookings and info." },
-  { name: "7i Audio",             url: "https://7i-audio.vercel.app/",                 role: "Brand / e-commerce", stack: "Next.js / Vercel",   summary: "7i Audio — audio equipment brand site." },
-  { name: "Pong District Manila", url: "https://pong-district-manila.vercel.app/",     role: "Venue landing page", stack: "Next.js / Tailwind", summary: "Ping-pong bar and lounge in Manila." },
-  { name: "1197 Cafe",            url: "https://1197-cafe.vercel.app/",                role: "Cafe site",          stack: "Next.js / Vercel",   summary: "1197 Cafe — menu, hours and location." },
-  { name: "Chaya's Gift Shop",    url: "https://chayas-gift-shop.vercel.app/",         role: "Storefront",         stack: "Next.js / Vercel",   summary: "Chaya's Gift Shop — a curated gift store." },
-  { name: "PC-Mon",               url: "https://pc-mon.vercel.app/",                   role: "Service landing",    stack: "Next.js / Tailwind", summary: "PC-Mon — computer and laptop repair in San Pedro." },
+  { name: "Leadly", img: "assets/projects/leadly.webp",               url: "https://leadly-KAMTEAM.vercel.app/",           role: "AI lead platform",   stack: "Next.js / Gemini AI", summary: "Leadly — an AI-powered B2B lead generation platform built for KAM Team. Prospectors describe their ideal client profile; Leadly queries live business sources, scores each match 0–100, and drafts personalised outreach emails ready to send from the Campaign Inbox. Settings let the team define their company positioning, target locations, and active products so the AI engine can refine results on every run." },
+  { name: "Solvera", img: "assets/projects/solvera.webp",              url: "https://solveraca.com/",                       role: "Client website",     stack: "Next.js / Tailwind", summary: "Solvera CA — business services and corporate site." },
+  { name: "Igneo Cafe", img: "assets/projects/igneo-cafe.webp",           url: "https://igneo-cafe.vercel.app/",               role: "Cafe / bar site",    stack: "React / Vite / Tailwind", summary: "Igneo Cafe — Mexican-inspired cafe and bar in Mandaluyong." },
+  { name: "Indoor Golf Venture", img: "assets/projects/indoor-golf.webp",  url: "https://indoor-golf-venture.vercel.app/",      role: "Venue landing page", stack: "React / Vercel",     summary: "Indoor golf simulator venue — bookings and info." },
+  { name: "7i Audio", img: "assets/projects/7i-audio.webp",             url: "https://7i-audio.vercel.app/",                 role: "Brand / e-commerce", stack: "Next.js / Vercel",   summary: "7i Audio — audio equipment brand site." },
+  { name: "Pong District Manila", img: "assets/projects/pong-district.webp", url: "https://pong-district-manila.vercel.app/",     role: "Venue landing page", stack: "Next.js / Tailwind", summary: "Ping-pong bar and lounge in Manila." },
+  { name: "1197 Cafe", img: "assets/projects/1197-cafe.webp",            url: "https://1197-cafe.vercel.app/",                role: "Cafe site",          stack: "Next.js / Vercel",   summary: "1197 Cafe — menu, hours and location." },
+  { name: "Chaya's Gift Shop", img: "assets/projects/chayas-gift-shop.webp",    url: "https://chayas-gift-shop.vercel.app/",         role: "Storefront",         stack: "Next.js / Vercel",   summary: "Chaya's Gift Shop — a curated gift store." },
+  { name: "PC-Mon", img: "assets/projects/pc-mon.webp",               url: "https://pc-mon.vercel.app/",                   role: "Service landing",    stack: "Next.js / Tailwind", summary: "PC-Mon — computer and laptop repair in San Pedro." },
   { name: "Lead Generator (N0%1#3)", role: "Lead generation", stack: "Private system", summary: "Confidential internal system — access restricted.", private: true },
   { name: "Payroll System (Q0%5^6$ 50%4!1#3)", role: "Payroll & compensation", stack: "Private system", summary: "Internal payroll system built for [REDACTED]. Automates salary computation, deductions, government contributions (SSS, PhilHealth, Pag-IBIG), and net pay calculation per pay period. Generates payslips and payroll summaries for management review — access restricted.", private: true },
   { name: "Inventory (S0%6^4#)", role: "Inventory management", stack: "Private system", summary: "Internal inventory system tracking stock levels, item movement, and reorder thresholds across [REDACTED] operations. Records incoming and outgoing items with timestamps and generates inventory reports for auditing — access restricted.", private: true },
@@ -165,11 +165,15 @@ const projectHost = p => p.private ? "ACCESS RESTRICTED" : host(p.url);
 /* ================================================================
    Render projects
    ================================================================ */
-$("#projectList").innerHTML = PROJECTS.map((p, i) => {
+/* The list is pre-rendered in index.html so it's crawlable and works without JS;
+   only build it here if that markup is missing. Keep both in sync with PROJECTS. */
+const projectList = $("#projectList");
+if (!projectList.children.length) projectList.innerHTML = PROJECTS.map((p, i) => {
   const n = String(i + 1).padStart(2, "0");
   return `<li class="reveal" style="--ry:60px;--dur:620ms;--delay:${(i % 2) * 120}ms">
     <article class="venture" data-i="${i}">
       <button type="button" class="proj-screen" aria-label="Preview ${esc(p.name)}">
+        ${p.img ? `<img class="ps-shot" src="${esc(p.img)}" alt="" loading="lazy" decoding="async" width="960" height="600">` : ""}
         <span class="ps-bar"><span>tty${n} — ${esc(projectHost(p))}</span><span class="ps-live${p.private ? " is-private" : ""}">${p.private ? "PRIVATE" : "LIVE"}</span></span>
         <span class="ps-num" aria-hidden="true">${n}</span>
         <span class="ps-name" data-final="${esc(p.name)}">${esc(p.name)}</span>
@@ -179,7 +183,7 @@ $("#projectList").innerHTML = PROJECTS.map((p, i) => {
       <div class="venture-row">
         <div><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p></div>
         <div class="venture-meta">
-          <p class="venture-year">Node ${n}</p>
+          <p class="venture-year">Project ${n}</p>
           ${p.private
             ? `<button type="button" class="btn venture-outcome private-project-link" data-i="${i}">Restricted</button>`
             : `<a class="btn venture-outcome" href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">Visit ↗</a>`}

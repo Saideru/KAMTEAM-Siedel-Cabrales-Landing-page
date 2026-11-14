@@ -40,7 +40,10 @@ html.lenis, html.lenis body{height:auto}
 html.is-loading{overflow:hidden}
 
 body{
-  background:radial-gradient(ellipse at 50% 30%, #0a1824 0%, #040610 55%, #020308 100%) fixed;
+  background:
+    url("circuit-bg.svg") 0 0 / 360px 360px fixed,
+    radial-gradient(ellipse at 50% 30%, #0a1824 0%, #040610 55%, #020308 100%) fixed;
+  background-color:#040610;
   color:var(--foreground);font-family:var(--font-sans);
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   overflow-x:hidden;font-size:1.0625rem;line-height:1.6;
@@ -426,7 +429,9 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
 .proj-screen{
   position:relative;display:block;width:100%;aspect-ratio:16/10;overflow:hidden;text-align:left;
   border:1px solid var(--line-strong);
-  background:radial-gradient(120% 120% at 30% 15%,rgba(14,74,90,0.55),rgba(2,8,14,0.96));
+  background:
+    url("circuit-bg.svg") 0 0 / 240px 240px,
+    radial-gradient(120% 120% at 30% 15%,rgba(14,74,90,0.55),rgba(2,8,14,0.96));
   box-shadow:inset 0 0 60px rgba(14,74,90,0.45);
   transition:border-color 340ms ease-out,box-shadow 340ms ease-out;
 }
@@ -813,3 +818,46 @@ html.page-pop main,html.page-pop .site-header{animation:pagePop 380ms var(--expo
   opacity:1 !important;transform:none !important;transition:none !important;
 }
 .rm .split:not(.is-split){visibility:visible}
+
+/* ================= Tech imagery ================= */
+/* Hero circuit / processor illustration, sits behind the name and copy */
+.hero-art{
+  position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;pointer-events:none;
+  opacity:0.6;transition:opacity 1400ms var(--expo) 1600ms;
+  transform:translateY(-12%);
+  -webkit-mask:radial-gradient(ellipse 70% 65% at 50% 48%,#000 35%,transparent 100%);
+          mask:radial-gradient(ellipse 70% 65% at 50% 48%,#000 35%,transparent 100%);
+}
+html.is-loading .hero-art{opacity:0}
+@media (max-width:639.98px){.hero-art{opacity:0.2}}
+
+/* Service card icons */
+.svc-top{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.svc-icon{
+  width:2.75rem;height:2.75rem;flex-shrink:0;fill:none;stroke:var(--green);stroke-width:2;
+  stroke-linecap:square;stroke-linejoin:miter;opacity:0.75;
+  filter:drop-shadow(0 0 4px var(--green-glow));transition:opacity 0.25s,filter 0.25s,transform 0.25s;
+}
+.service-card{transition:border-color 0.25s,box-shadow 0.25s}
+.service-card:hover{border-color:var(--green);box-shadow:inset 0 0 30px rgba(14,74,90,0.3),0 0 18px rgba(109,241,255,0.35)}
+.service-card:hover .svc-icon{opacity:1;transform:scale(1.06);filter:drop-shadow(0 0 8px var(--green))}
+.service-card-ai .svc-icon{stroke:#fff;opacity:1;filter:drop-shadow(0 0 6px #6df1ff)}
+
+/* Problem card icons (sit just before the category label) */
+.solve-head{align-items:center}
+.solve-icon{
+  width:1.1rem;height:1.1rem;margin-left:auto;margin-right:0.6rem;fill:none;stroke:var(--accent);
+  stroke-width:3;stroke-linecap:square;filter:drop-shadow(0 0 3px var(--accent-glow));
+}
+.rm .hero-art{transition:none}
+
+/* Project screenshots (public projects only) — dimmed behind the terminal overlay, brighten on hover */
+.ps-shot{
+  position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;object-position:top center;
+  filter:brightness(0.38) saturate(0.75) contrast(1.05);opacity:0.72;transform:scale(1.001);
+  transition:filter 450ms ease-out,opacity 450ms ease-out,transform 700ms var(--expo);
+}
+.proj-screen:has(.ps-shot) .ps-meta{color:var(--text);text-shadow:0 1px 6px #000}
+.proj-screen:has(.ps-shot) .ps-name{text-shadow:0 0 18px var(--green-glow),0 2px 14px #000,0 0 4px #000}
+.venture.is-hover .ps-shot,.proj-screen:hover .ps-shot,.proj-screen:focus-visible .ps-shot{filter:brightness(0.62) saturate(0.95);opacity:0.9;transform:scale(1.035)}
+.rm .ps-shot{transition:none}

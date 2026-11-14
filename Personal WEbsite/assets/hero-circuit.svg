@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice">
+  <style>
+    .t{fill:none;stroke:#6df1ff;stroke-width:2;stroke-opacity:.22}
+    .p{fill:none;stroke:#bff7ff;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:14 260;animation:run 4.8s linear infinite;filter:drop-shadow(0 0 4px #6df1ff)}
+    .p2{animation-duration:6.2s;animation-delay:-2s}
+    .p3{animation-duration:5.4s;animation-delay:-3.6s}
+    .v{fill:#040610;stroke:#6df1ff;stroke-width:2;stroke-opacity:.5}
+    .chip{fill:rgba(10,44,60,.55);stroke:#6df1ff;stroke-width:2.5}
+    .pin{stroke:#6df1ff;stroke-width:3;stroke-opacity:.6}
+    .core{animation:glow 3.2s ease-in-out infinite}
+    @keyframes run{from{stroke-dashoffset:274}to{stroke-dashoffset:0}}
+    @keyframes glow{0%,100%{opacity:.55}50%{opacity:1}}
+    @media (prefers-reduced-motion:reduce){.p,.core{animation:none}.p{stroke-dasharray:none;stroke-opacity:.3}}
+  </style>
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#6df1ff" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#6df1ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="600" cy="380" r="300" fill="url(#halo)"/>
+
+  <!-- traces radiating from the chip -->
+  <g class="t">
+    <path id="a1" d="M520 330H380l-60-60H120"/>
+    <path id="a2" d="M520 380H0"/>
+    <path id="a3" d="M520 430H400l-70 70H160l-40 40"/>
+    <path id="a4" d="M680 330h140l60-60h200"/>
+    <path id="a5" d="M680 380h520"/>
+    <path id="a6" d="M680 430h120l70 70h170l40 40"/>
+    <path id="a7" d="M560 300V180l-40-40V0"/>
+    <path id="a8" d="M640 300V160l50-50h120"/>
+    <path id="a9" d="M560 460v120l-60 60H340"/>
+    <path id="a10" d="M640 460v160l40 40v100"/>
+    <path d="M600 300V60"/>
+    <path d="M600 460v300"/>
+  </g>
+
+  <!-- data pulses travelling along traces -->
+  <g class="p"><use href="#a1"/></g>
+  <g class="p p2"><use href="#a4"/></g>
+  <g class="p p3"><use href="#a6"/></g>
+  <g class="p p2"><use href="#a9"/></g>
+  <g class="p p3"><use href="#a8"/></g>
+  <g class="p"><use href="#a3"/></g>
+
+  <!-- vias -->
+  <g class="v">
+    <circle cx="120" cy="270" r="7"/><circle cx="120" cy="540" r="7"/>
+    <circle cx="1080" cy="270" r="7"/><circle cx="1080" cy="540" r="7"/>
+    <circle cx="520" cy="140" r="7"/><circle cx="810" cy="110" r="7"/>
+    <circle cx="340" cy="640" r="7"/><circle cx="680" cy="660" r="7"/>
+    <circle cx="600" cy="60" r="7"/><circle cx="320" cy="270" r="5"/><circle cx="880" cy="270" r="5"/>
+  </g>
+
+  <!-- processor -->
+  <g class="pin">
+    <path d="M540 300v-14M560 300v-14M580 300v-14M600 300v-14M620 300v-14M640 300v-14M660 300v-14"/>
+    <path d="M540 460v14M560 460v14M580 460v14M600 460v14M620 460v14M640 460v14M660 460v14"/>
+    <path d="M520 320h-14M520 340h-14M520 360h-14M520 380h-14M520 400h-14M520 420h-14M520 440h-14"/>
+    <path d="M680 320h14M680 340h14M680 360h14M680 380h14M680 400h14M680 420h14M680 440h14"/>
+  </g>
+  <rect class="chip" x="520" y="300" width="160" height="160" rx="6"/>
+  <rect x="540" y="320" width="120" height="120" fill="none" stroke="#6df1ff" stroke-opacity=".35" stroke-dasharray="4 6"/>
+  <!-- KAMTEAM chevron mark -->
+  <g class="core" fill="none" stroke="#bff7ff" stroke-width="9" stroke-linejoin="miter" style="filter:drop-shadow(0 0 8px #6df1ff)">
+    <path d="M568 370l32-32 32 32"/>
+    <path d="M568 392l32 32 32-32"/>
+  </g>
+</svg>
