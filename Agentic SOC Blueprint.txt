@@ -1,0 +1,145 @@
+KAM Team · Agentic SOC explained
+
+# Your security team's playbooks, turned into AI teammates
+
+A SOC (Security Operations Center) is the team that watches alerts and stops attacks. This blueprint shows how plain files on disk teach an AI like Claude to investigate alerts the way your best analyst would, while a human still approves anything risky.
+
+Part 1 · The four layers
+
+## Think of it as onboarding a new analyst
+
+Each layer is one thing you would give a new hire. Each one lives in its own file or folder.
+
+TOOLS
+
+### The keys to the systems
+
+Logins to the SIEM, threat-intel lookups, case management. MCP is the universal plug that connects the AI to them.
+
+`.mcp.json`
+
+SKILLS
+
+### The playbook binder
+
+Step-by-step "how we triage an alert here", plus reference lists like known-good service accounts. Written once, reused every time.
+
+`.claude/skills/<name>/SKILL.md`
+
+SUB-AGENTS
+
+### Specialists on the shift
+
+A shift manager hands focused jobs to a researcher, an exposure analyst and an engineer. Each sees only the tools it needs.
+
+`.claude/agents/<role>.md`
+
+TEAMS & GOALS
+
+### The war room and the mission
+
+Several agents work in parallel from a shared task board. A goal says what "done" looks like, and they keep going until it is met.
+
+`TASKS.md · /goal`
+
+Part 2 · The file blueprint
+
+## How the folder runs an investigation
+
+Left: the project folder. Right: what happens, in order, when a new threat lands. Colors match the four layers.
+
+```
+my-soc-project/
+├── .mcp.json            # connects SecOps, GTI, Okta…
+├── .claude/
+│   ├── settings.json    # "ask" policy on create_rule
+│   ├── skills/
+│   │   └── google-secops-triage/
+│   │       ├── SKILL.md     # the playbook
+│   │       ├── reference/
+│   │       │   └── known-good-service-accounts.md
+│   │       └── templates/
+│   │           └── incident-summary-template.md
+│   └── agents/
+│       ├── soc-shift-manager.md  # the lead
+│       ├── threat-researcher.md
+│       ├── exposure-analyst.md
+│       └── secops-engineer.md
+├── TASKS.md             # shared board (Agent Teams)
+└── reports/
+    └── CVE-2025-5777-summary.md
+```
+
+Tools & safety Skills Sub-agents Teams Output
+
+1. 1
+
+   ### A threat arrives
+
+   An alert fires, or a new CVE is announced. You give the shift manager one sentence: "Are we exposed, and what do we do?"
+
+   agents/soc-shift-manager.md
+2. 2
+
+   ### The lead splits the work
+
+   It hands out three parallel jobs: research the threat, check internal exposure, plan the fix.
+
+   agents/threat-researcher.md · exposure-analyst.md · secops-engineer.md
+3. 3
+
+   ### Each specialist follows the playbook
+
+   It loads the matching skill only when needed, checks reference lists, and avoids false alarms the way your team does.
+
+   skills/google-secops-triage/SKILL.md + reference/
+4. 4
+
+   ### Tools pull the real data
+
+   Through MCP the agents search logs in Google SecOps and look up indicators in Google Threat Intelligence.
+
+   .mcp.json
+5. 5
+
+   ### Human approval gate
+
+   Before anything touches production, like deploying a new detection rule, the agent stops and asks. Nothing happens until a person types "yes".
+
+   settings.json → ask policy
+6. 6
+
+   ### One clear report
+
+   The lead combines the findings into a verdict and next steps, saved to a file or posted back to the case.
+
+   templates/ → reports/
+
+Why files?
+
+### Playbooks become policy-as-code
+
+- Plain Markdown that anyone on the team can read and edit.
+- Kept in Git, so every change is reviewed, versioned and reversible.
+- Works with other AI models too; the method is not locked to one vendor.
+
+Guardrails
+
+### Keep it safe and affordable
+
+- Each agent only gets the tools it needs (least privilege).
+- Risky actions always require human approval.
+- Set turn, time and cost limits so agents can't loop forever.
+- Treat the AI verdict as a strong lead. An analyst still checks it.
+
+The pitch
+
+## From AI that talks to AI that works for your SOC
+
+**Hours to minutes**A full CVE exposure sweep finished in under 10 minutes in the author's lab test, work that used to take hours of manual searching.
+
+**Your experts, everywhere**Senior analyst know-how is written once as a skill and applied the same way on every alert, every shift.
+
+**Humans stay in charge**Agents investigate. People approve. Every production change has a pause and a sign-off.
+
+Based on "Beyond Chat: Building Multi Agent SOC Ecosystems with Claude and Google MCP" by Elirez Oved, Google Cloud Security Community. Speed figures come from a controlled lab test; real environments will vary. Agent file names other than soc-shift-manager and secops-engineer are illustrative. [Read the original article](https://security.googlecloudcommunity.com/community-blog-42/beyond-chat-building-multi-agent-soc-ecosystems-with-claude-and-google-mcp-8120).

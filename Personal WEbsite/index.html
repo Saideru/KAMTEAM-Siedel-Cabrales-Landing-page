@@ -47,7 +47,7 @@
   })();
 </script>
 
-<link rel="stylesheet" href="assets/site.css?v=15">
+<link rel="stylesheet" href="assets/site.css?v=16">
 <style>
   @keyframes btnGlowPulse {
     0%,100% { box-shadow: 0 0 6px #6df1ff, 0 0 14px rgba(109,241,255,.55), 0 0 28px rgba(109,241,255,.35); text-shadow: 0 0 6px #6df1ff; }
@@ -59,6 +59,28 @@
     animation: btnGlowPulse 2.2s ease-in-out infinite;
   }
   .hero-services:hover { filter: brightness(1.2); }
+
+  .solve-grid { margin-top: 4rem; display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+  @media (min-width: 900px) { .solve-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .solve-card {
+    display: flex; flex-direction: column; padding: 0 0 1.5rem;
+    border: 1px solid var(--line-strong); background: var(--surface);
+    box-shadow: inset 0 0 30px rgba(14,74,90,0.2);
+    transition: border-color .25s, box-shadow .25s;
+  }
+  .solve-card:hover { border-color: #6df1ff; box-shadow: inset 0 0 30px rgba(14,74,90,0.3), 0 0 18px rgba(109,241,255,.35); }
+  .solve-head {
+    display: flex; justify-content: space-between; padding: .75rem 1.5rem;
+    border-bottom: 1px dashed var(--line-strong); font-size: .75rem; letter-spacing: .15em; color: var(--accent);
+  }
+  .solve-card h3 {
+    margin: 1.25rem 1.5rem 0; font-family: var(--font-display); font-size: 2.2rem; font-weight: 400;
+    line-height: 1; text-transform: uppercase; text-shadow: 0 0 8px var(--green-glow);
+  }
+  .solve-card p { margin: .9rem 1.5rem 0; font-size: .9375rem; line-height: 1.6; }
+  .solve-pain { color: var(--muted); }
+  .solve-fix { margin-top: auto !important; padding-top: 1.25rem; color: #e9fdff; }
+  .solve-fix b { color: #6df1ff; font-weight: 400; text-shadow: 0 0 6px #6df1ff; }
 </style>
 <noscript><style>
   .preloader{display:none}
@@ -95,8 +117,10 @@
     </a>
     <ul class="nav-links">
       <li><a href="#profile">Profile</a></li>
+      <li><a href="#solve">What We Solve</a></li>
       <li><a href="#services">Services To Be Offered</a></li>
       <li><a href="#projects">Projects</a></li>
+      <li><a href="#creatives">AI Creatives</a></li>
       <li><a href="#kam">KAM Team</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -110,8 +134,10 @@
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
   <ul>
     <li><a href="#profile">Profile</a></li>
+    <li><a href="#solve">What We Solve</a></li>
     <li><a href="#services">Services To Be Offered</a></li>
     <li><a href="#projects">Projects</a></li>
+    <li><a href="#creatives">AI Creatives</a></li>
     <li><a href="#kam">KAM Team</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -184,73 +210,36 @@
     </div>
   </section>
 
-  <!-- ============ Skill Set ============ -->
-  <section id="skills" class="section">
+  <!-- ============ What We Solve ============ -->
+  <section id="solve" class="section">
     <div class="sec-head">
       <div>
-        <p class="eyebrow" data-scramble>02 — Skill Set</p>
-        <h2 class="sec-h plain-h split">Twenty-four skills, one operator.</h2>
+        <p class="eyebrow" data-scramble>02 — What We Solve</p>
+        <h2 class="sec-h plain-h split">Three problems that stall growth.</h2>
       </div>
-      <p class="sec-label">SKILLS.LOG // 24 ENTRIES</p>
+      <p class="sec-label">ISSUES.LOG // 03 RESOLVED</p>
     </div>
 
-    <dl class="stats">
-      <div class="stat reveal" style="--delay:0ms"><dd data-count>24</dd><dt>Core skills</dt></div>
-      <div class="stat reveal" style="--delay:110ms"><dd data-count>07</dd><dt>Live client sites</dt></div>
-      <div class="stat reveal" style="--delay:220ms"><dd data-count>02</dd><dt>Roles at KAM Team</dt></div>
-      <div class="stat reveal" style="--delay:330ms"><dd data-count>04</dd><dt>Disciplines</dt></div>
-    </dl>
-
-    <div class="skill-grid">
-      <section class="sk-panel reveal" style="--delay:0ms" aria-labelledby="skDev">
-        <header class="sk-head"><span id="skDev">&gt;&gt; DEV.SYS</span><span>08</span></header>
-        <p class="sk-title">Development &amp; Design</p>
-        <ul class="sk-list">
-          <li><span class="sk-idx">01</span>Web Authoring</li>
-          <li><span class="sk-idx">02</span>Web Design</li>
-          <li><span class="sk-idx">03</span>Software Design</li>
-          <li><span class="sk-idx">04</span>Full-Stack Development</li>
-          <li><span class="sk-idx">05</span>Software Coding</li>
-          <li><span class="sk-idx">06</span>Software Maintenance</li>
-          <li><span class="sk-idx">07</span>Conversational AI</li>
-          <li><span class="sk-idx">08</span>Graphic Design</li>
-        </ul>
-      </section>
-      <section class="sk-panel reveal" style="--delay:90ms" aria-labelledby="skData">
-        <header class="sk-head"><span id="skData">&gt;&gt; DATA.SYS</span><span>07</span></header>
-        <p class="sk-title">Data, Monitoring &amp; Security</p>
-        <ul class="sk-list">
-          <li><span class="sk-idx">09</span>Databases</li>
-          <li><span class="sk-idx">10</span>Database Administration</li>
-          <li><span class="sk-idx">11</span>MIS Reporting</li>
-          <li><span class="sk-idx">12</span>System Monitoring</li>
-          <li><span class="sk-idx">13</span>Network Monitoring Tools</li>
-          <li><span class="sk-idx">14</span>Security Auditor</li>
-          <li><span class="sk-idx">15</span>SEO Optimization</li>
-        </ul>
-      </section>
-      <section class="sk-panel reveal" style="--delay:180ms" aria-labelledby="skHw">
-        <header class="sk-head"><span id="skHw">&gt;&gt; HW.SYS</span><span>05</span></header>
-        <p class="sk-title">IT &amp; Hardware</p>
-        <ul class="sk-list">
-          <li><span class="sk-idx">16</span>IT Hardware Support</li>
-          <li><span class="sk-idx">17</span>Hardware Diagnostics</li>
-          <li><span class="sk-idx">18</span>Computer Maintenance</li>
-          <li><span class="sk-idx">19</span>IP CCTV</li>
-          <li><span class="sk-idx">20</span>Technical Assistance</li>
-        </ul>
-      </section>
-      <section class="sk-panel reveal" style="--delay:270ms" aria-labelledby="skOps">
-        <header class="sk-head"><span id="skOps">&gt;&gt; OPS.SYS</span><span>04</span></header>
-        <p class="sk-title">People &amp; Operations</p>
-        <ul class="sk-list">
-          <li><span class="sk-idx">21</span>Supervisory Skills</li>
-          <li><span class="sk-idx">22</span>Relating to Clients</li>
-          <li><span class="sk-idx">23</span>Human Resources (HR)</li>
-          <li><span class="sk-idx">24</span>Information Technology Training</li>
-        </ul>
-      </section>
-    </div>
+    <ul class="solve-grid">
+      <li class="solve-card reveal" style="--delay:0ms">
+        <header class="solve-head"><span>&gt;&gt; ERR.01</span><span>MARKETING</span></header>
+        <h3>Marketing that doesn't bring leads</h3>
+        <p class="solve-pain">Your site is invisible on Google, posts get no traction and ad spend leaks with nothing to show for it.</p>
+        <p class="solve-fix"><b>&gt; FIX:</b> SEO-ready websites, clear messaging and GHL funnels that turn visitors into booked calls.</p>
+      </li>
+      <li class="solve-card reveal" style="--delay:120ms">
+        <header class="solve-head"><span>&gt;&gt; ERR.02</span><span>OFFER</span></header>
+        <h3>Offers that don't land</h3>
+        <p class="solve-pain">Prospects can't tell what you sell or why it matters, so good services get passed over for louder competitors.</p>
+        <p class="solve-fix"><b>&gt; FIX:</b> A clear offer and solution pages built around your client's problem, presented to convert.</p>
+      </li>
+      <li class="solve-card reveal" style="--delay:240ms">
+        <header class="solve-head"><span>&gt;&gt; ERR.03</span><span>OPERATIONS</span></header>
+        <h3>Operations stuck on manual</h3>
+        <p class="solve-pain">Follow-ups slip, data lives in scattered spreadsheets and your team spends hours on work a system should do.</p>
+        <p class="solve-fix"><b>&gt; FIX:</b> AI automation and custom business systems that follow up, report and run on their own.</p>
+      </li>
+    </ul>
   </section>
 
   <!-- ============ Projects ============ -->
@@ -309,11 +298,65 @@
     <a class="btn services-contact reveal" href="#contact" style="--delay:320ms">&gt; Discuss a project<span class="cursor">▮</span></a>
   </section>
 
+  <!-- ============ AI Creatives ============ -->
+  <section id="creatives" class="section creatives">
+    <div class="cr-grid">
+      <div class="cr-copy">
+        <p class="cr-badge reveal" style="--dur:520ms"><span class="cr-badge-dot" aria-hidden="true"></span>KAMTEAM AI Creatives</p>
+        <p class="eyebrow" data-scramble>05 — AI Creatives</p>
+        <h2 class="sec-h cr-h split">Scroll-stopping content, made with AI.</h2>
+        <p class="cr-body reveal" style="--dur:520ms">I script, generate and edit animated short-form videos and visuals that explain your offer in under 60 seconds.</p>
+        <ul class="cr-specs reveal" style="--dur:520ms;--delay:90ms">
+          <li><span>FORMAT</span>9:16 / 1:1 / 16:9</li>
+          <li><span>RUNTIME</span>15 – 60 SEC</li>
+          <li><span>OUTPUT</span>TIKTOK · REELS · SHORTS</li>
+        </ul>
+        <div class="cr-actions reveal" style="--dur:520ms;--delay:160ms">
+          <a class="btn cr-request" href="#contact" data-topic="AI creatives">&gt; Request AI Creatives<span class="cursor">▮</span></a>
+          <a class="btn cr-watch" href="http://tiktok.com/@s.c_kamteam" target="_blank" rel="noreferrer noopener">&gt; Watch the videos ↗</a>
+        </div>
+      </div>
+
+      <div class="cr-phone-wrap reveal" style="--dur:700ms;--delay:120ms">
+        <div class="cr-phone">
+          <div class="cr-screen" id="crScreen">
+            <div class="cr-progress"><span id="crBar"></span></div>
+            <video class="cr-video" id="crVideo" playsinline muted preload="none" hidden></video>
+            <div class="cr-card" id="crCard" aria-live="polite">
+              <p class="cr-card-tag" id="crTag">EXPLAINER</p>
+              <p class="cr-card-title" id="crTitle">SEO terms, explained in 60 seconds</p>
+              <p class="cr-card-sys">&gt; RENDERING<span class="cursor">▮</span></p>
+            </div>
+            <button type="button" class="cr-mute" id="crMute" aria-label="Unmute video" aria-pressed="false" hidden>MUTED</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cr-playlist-wrap">
+        <p class="cr-np">&gt; NOW PLAYING</p>
+        <ol class="cr-playlist" id="crPlaylist">
+          <li><button type="button" class="cr-item is-active" data-tag="Explainer" data-src="">
+            <span class="cr-item-tag">Explainer</span><span class="cr-item-title">SEO terms, explained in 60 seconds</span></button></li>
+          <li><button type="button" class="cr-item" data-tag="List" data-src="">
+            <span class="cr-item-tag">List</span><span class="cr-item-title">5 GHL automations every business needs</span></button></li>
+          <li><button type="button" class="cr-item" data-tag="Explainer" data-src="">
+            <span class="cr-item-tag">Explainer</span><span class="cr-item-title">Local LLM vs cloud AI</span></button></li>
+          <li><button type="button" class="cr-item" data-tag="Tips in 60 seconds" data-src="">
+            <span class="cr-item-tag">Tips in 60 seconds</span><span class="cr-item-title">How often should you actually post?</span></button></li>
+          <li><button type="button" class="cr-item" data-tag="List" data-src="">
+            <span class="cr-item-tag">List</span><span class="cr-item-title">6 signs your website is losing leads</span></button></li>
+          <li><button type="button" class="cr-item" data-tag="Brand series" data-src="">
+            <span class="cr-item-tag">Brand series</span><span class="cr-item-title">KAMTEAM build log: Leadly</span></button></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ KAM Team ============ -->
   <section id="kam" class="section">
     <div class="sec-head">
       <div>
-        <p class="eyebrow" data-scramble>05 — Acknowledgement</p>
+        <p class="eyebrow" data-scramble>06 — Acknowledgement</p>
         <h2 class="sec-h plain-h split">Built alongside KAM Team.</h2>
       </div>
       <p class="sec-label">TRANSMISSION // KAM.TEAM</p>
@@ -350,7 +393,7 @@
   <footer id="contact" class="contact">
     <div class="contact-grid">
       <div class="contact-info">
-        <p class="eyebrow" data-scramble>06 — Contact</p>
+        <p class="eyebrow" data-scramble>07 — Contact</p>
         <h2 class="sec-h contact-h split">Got a site to build or a system to fix?</h2>
         <p class="contact-body reveal" style="--dur:520ms">Send a message — I reply to every inquiry.</p>
         <div class="email-wrap reveal" style="--dur:520ms;--delay:90ms">
@@ -365,15 +408,52 @@
 
       <aside class="inquiry-panel" id="inquiryPanel" aria-labelledby="inquiryTitle">
         <div class="inquiry-panel-bar">
-          <h2 id="inquiryTitle">Send an inquiry</h2>
+          <div>
+            <p class="iq-eyebrow">// Send a message</p>
+            <h2 id="inquiryTitle">What can we help with?</h2>
+          </div>
+          <span class="iq-sys" aria-hidden="true">INQ.EXE ■</span>
         </div>
-        <p class="inquiry-intro">Type your inquiry. We’ll open Messenger and copy it for you to paste into the chat.</p>
-        <form id="inquiryForm">
-          <label for="inquiryMessage">Your message</label>
-          <textarea id="inquiryMessage" name="message" rows="7" maxlength="2000" required placeholder="Hi Siedel, I'm interested in your services. I'd like to discuss..."></textarea>
-          <a class="btn inquiry-send" id="inquirySend" href="https://www.messenger.com/e2ee/t/9953194074700086" target="_blank" rel="noopener noreferrer">&gt; Send Inquiry ↗</a>
+        <form id="inquiryForm" novalidate>
+          <fieldset class="iq-topics">
+            <legend class="iq-legend">&gt; Select a topic</legend>
+            <label class="iq-topic"><input type="radio" name="topic" value="Website or web app" required><span><b>Website or web app</b>New site, redesign or full-stack build for your business.</span></label>
+            <label class="iq-topic"><input type="radio" name="topic" value="AI automation"><span><b>AI automation</b>Chatbots, AI agents and workflows that cut manual work.</span></label>
+            <label class="iq-topic"><input type="radio" name="topic" value="SEO and visibility"><span><b>SEO &amp; visibility</b>Audits, on-page fixes and search-ready site structure.</span></label>
+            <label class="iq-topic"><input type="radio" name="topic" value="GHL funnels and CRM"><span><b>GHL funnels &amp; CRM</b>GoHighLevel funnels, pipelines and follow-up automation.</span></label>
+            <label class="iq-topic"><input type="radio" name="topic" value="AI creatives"><span><b>AI creatives</b>Short-form videos and visuals for TikTok, Reels and Shorts.</span></label>
+            <label class="iq-topic"><input type="radio" name="topic" value="IT support and security"><span><b>IT support &amp; security</b>Hardware, networks, IP CCTV and security audits.</span></label>
+            <label class="iq-topic iq-topic-wide"><input type="radio" name="topic" value="General"><span><b>General</b>Anything else you want to discuss with KAMTEAM.</span></label>
+          </fieldset>
+
+          <div class="iq-fields">
+            <div class="iq-field">
+              <label for="iqName">Full name</label>
+              <input id="iqName" name="name" type="text" autocomplete="name" required placeholder="Your name">
+            </div>
+            <div class="iq-field">
+              <label for="iqEmail">Email</label>
+              <input id="iqEmail" name="email" type="email" autocomplete="email" required placeholder="you@company.com">
+            </div>
+            <div class="iq-field">
+              <label for="iqCompany">Company <span class="iq-opt">(optional)</span></label>
+              <input id="iqCompany" name="company" type="text" autocomplete="organization" placeholder="Company or brand name">
+            </div>
+            <div class="iq-field">
+              <label for="iqFocus">Service focus <span class="iq-opt">(optional)</span></label>
+              <input id="iqFocus" name="focus" type="text" placeholder="e.g. SEO, GHL, chatbot">
+            </div>
+            <div class="iq-field iq-field-wide">
+              <label for="inquiryMessage">Message</label>
+              <textarea id="inquiryMessage" name="message" rows="6" maxlength="2000" required placeholder="Tell me what you need, your timeline and budget range."></textarea>
+            </div>
+          </div>
+
           <p class="inquiry-status" id="inquiryStatus" role="status" aria-live="polite"></p>
-          <p class="inquiry-note">Messenger will open in a new tab. Your message is copied for you to paste and send. This site does not store or send the message automatically. <a href="https://www.messenger.com/e2ee/t/9953194074700086" target="_blank" rel="noopener noreferrer">Open Messenger directly ↗</a></p>
+          <div class="iq-foot">
+            <p class="inquiry-note">Sending opens Messenger in a new tab with your inquiry copied, ready to paste. Nothing is stored on this site. <a href="https://www.messenger.com/e2ee/t/9953194074700086" target="_blank" rel="noopener noreferrer">Open Messenger directly ↗</a></p>
+            <a class="btn inquiry-send" id="inquirySend" href="https://www.messenger.com/e2ee/t/9953194074700086" target="_blank" rel="noopener noreferrer">&gt; Send message ↗</a>
+          </div>
         </form>
       </aside>
     </div>
@@ -399,7 +479,7 @@
 
 </main>
 
-<script src="assets/site.js?v=15" defer></script>
+<script src="assets/site.js?v=17" defer></script>
 <script>
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a[href^="mailto:"], a[href^="tel:"]');

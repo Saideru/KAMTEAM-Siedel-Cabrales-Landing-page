@@ -36,12 +36,33 @@ async function copyInquiryMessage(text){
   return copied;
 }
 
+function composeInquiry(){
+  const f = new FormData(inquiryForm);
+  const v = k => String(f.get(k) || "").trim();
+  return [
+    `Topic: ${v("topic")}`,
+    `Name: ${v("name")}`,
+    `Email: ${v("email")}`,
+    v("company") ? `Company: ${v("company")}` : null,
+    v("focus") ? `Service focus: ${v("focus")}` : null,
+    "",
+    v("message")
+  ].filter(line => line !== null).join("\n");
+}
+
+inquiryForm.addEventListener("submit", e => e.preventDefault());
+
+$$("[data-topic]").forEach(link => link.addEventListener("click", () => {
+  const radio = $(`#inquiryForm input[name="topic"][value="${link.dataset.topic}"]`);
+  if (radio) radio.checked = true;
+}));
+
 $("#inquirySend").addEventListener("click", e => {
   if (!inquiryForm.reportValidity()){
     e.preventDefault();
     return;
   }
-  const message = $("#inquiryMessage").value.trim();
+  const message = composeInquiry();
   inquiryStatus.textContent = "Opening Messenger and copying your message…";
   copyInquiryMessage(message).then(copied => {
     inquiryStatus.textContent = copied
@@ -51,6 +72,68 @@ $("#inquirySend").addEventListener("click", e => {
 });
 
 $("#year").textContent = new Date().getFullYear();
+
+/* ================================================================
+   AI Creatives player — items with data-src play video, others show a title card
+   ================================================================ */
+(() => {
+  const items = $$(".cr-item");
+  if (!items.length) return;
+  const video = $("#crVideo"), card = $("#crCard"), bar = $("#crBar"), mute = $("#crMute");
+  const CARD_MS = 6000;
+  let current = 0, timer = 0;
+
+  const runBar = ms => {
+    bar.style.transition = "none";
+    bar.style.width = "0%";
+    void bar.offsetWidth;
+    if (ms) { bar.style.transition = `width ${ms}ms linear`; bar.style.width = "100%"; }
+  };
+
+  function show(i, autoplay = true){
+    clearTimeout(timer);
+    current = (i + items.length) % items.length;
+    items.forEach((el, n) => {
+      el.classList.toggle("is-active", n === current);
+      el.setAttribute("aria-current", n === current ? "true" : "false");
+    });
+    const item = items[current];
+    $("#crTag").textContent = item.dataset.tag;
+    $("#crTitle").textContent = item.querySelector(".cr-item-title").textContent;
+    card.classList.remove("is-switch"); void card.offsetWidth; card.classList.add("is-switch");
+
+    const src = item.dataset.src;
+    if (src){
+      card.hidden = true; video.hidden = false; mute.hidden = false;
+      video.src = src;
+      runBar(0);
+      video.play().catch(() => {});
+    } else {
+      video.pause(); video.removeAttribute("src"); video.hidden = true; mute.hidden = true;
+      card.hidden = false;
+      if (autoplay && !REDUCED){ runBar(CARD_MS); timer = setTimeout(() => show(current + 1), CARD_MS); }
+      else runBar(0);
+    }
+  }
+
+  video.addEventListener("timeupdate", () => {
+    if (video.duration) { bar.style.transition = "none"; bar.style.width = `${(video.currentTime / video.duration) * 100}%`; }
+  });
+  video.addEventListener("ended", () => show(current + 1));
+  mute.addEventListener("click", () => {
+    video.muted = !video.muted;
+    mute.textContent = video.muted ? "MUTED" : "SOUND ON";
+    mute.setAttribute("aria-pressed", String(!video.muted));
+    mute.setAttribute("aria-label", video.muted ? "Unmute video" : "Mute video");
+  });
+  items.forEach((el, n) => el.addEventListener("click", () => show(n)));
+
+  const io = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) show(current);
+    else { clearTimeout(timer); video.pause(); runBar(0); }
+  }, { threshold: 0.35 });
+  io.observe($("#crScreen"));
+})();
 
 /* ================================================================
    Data
@@ -734,14 +817,10 @@ function finishPreload(){
     `           ${esc(roles.slice(3).join(" · "))}`,
     "  STATUS   <ok>AVAILABLE FOR PROJECTS</ok>",
     "",
-    `<ac>&gt; MOUNTING /skills ............ ${$$(".sk-list li").length} OK</ac>`
+    `<ac>&gt; MOUNTING /solve ............. ${String($$(".solve-card").length).padStart(2, "0")} OK</ac>`
   ];
-  $$(".sk-panel").forEach(panel => {
-    INFO.push(`  ${esc(panel.querySelector(".sk-head span").textContent.replace(/^>>\s*/, ""))} // ${esc(panel.querySelector(".sk-title").textContent.toUpperCase())}`);
-    $$(".sk-list li", panel).forEach(li => {
-      const idx = li.querySelector(".sk-idx").textContent;
-      INFO.push(`    [${idx}] ${esc(li.textContent.slice(idx.length).trim())} <ok>OK</ok>`);
-    });
+  $$(".solve-card").forEach((card, i) => {
+    INFO.push(`  [${String(i + 1).padStart(2, "0")}] ${esc(card.querySelector("h3").textContent.toUpperCase())} <ok>RESOLVED</ok>`);
   });
   INFO.push("", `<ac>&gt; MOUNTING /projects .......... ${String(PROJECTS.length).padStart(2, "0")} OK</ac>`);
   PROJECTS.forEach((p, i) => INFO.push(`  [${String(i + 1).padStart(2, "0")}] ${esc(p.name)} // ${esc(projectHost(p))} <ok>${p.private ? "PRIVATE" : "LIVE"}</ok>`));
