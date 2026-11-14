@@ -60,23 +60,24 @@
   }
   .hero-services:hover { filter: brightness(1.2); }
 
-  .solve-grid {
+  .carousel-track {
     margin-top: 4rem; display: flex; gap: 1.25rem; overflow-x: auto;
     scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none;
   }
-  .solve-grid::-webkit-scrollbar { display: none; }
+  .carousel-track::-webkit-scrollbar { display: none; }
+  .carousel-track > li { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; }
+  @media (min-width: 640px) { .carousel-track > li { flex-basis: calc((100% - 1.25rem) / 2); } }
+  @media (min-width: 900px) { .carousel-track > li { flex-basis: calc((100% - 2.5rem) / 3); } }
+  .carousel-controls { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 1.25rem; }
+  .carousel-arrow { cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { .carousel-track { scroll-behavior: auto; } }
   .solve-card {
-    flex: 0 0 100%; min-width: 0; scroll-snap-align: start;
     display: flex; flex-direction: column; padding: 0 0 1.5rem;
     border: 1px solid var(--line-strong); background: var(--surface);
     box-shadow: inset 0 0 30px rgba(14,74,90,0.2);
     transition: border-color .25s, box-shadow .25s;
   }
-  @media (min-width: 640px) { .solve-card { flex-basis: calc((100% - 1.25rem) / 2); } }
-  @media (min-width: 900px) { .solve-card { flex-basis: calc((100% - 2.5rem) / 3); } }
-  .solve-controls { display: flex; justify-content: flex-end; gap: .75rem; margin-top: 1.25rem; }
-  .solve-arrow { cursor: pointer; }
-  @media (prefers-reduced-motion: reduce) { .solve-grid { scroll-behavior: auto; } }
+  .service-carousel .service-card { transform: none; }
   .solve-card:hover { border-color: #6df1ff; box-shadow: inset 0 0 30px rgba(14,74,90,0.3), 0 0 18px rgba(109,241,255,.35); }
   .solve-head {
     display: flex; justify-content: space-between; padding: .75rem 1.5rem;
@@ -229,8 +230,8 @@
       <p class="sec-label">ISSUES.LOG // 06 RESOLVED</p>
     </div>
 
-    <div class="solve-carousel" role="region" aria-roledescription="carousel" aria-labelledby="solve-heading">
-    <ul class="solve-grid" id="solveCarousel" aria-label="Problems we solve">
+    <div class="solve-carousel" data-card-carousel role="region" aria-roledescription="carousel" aria-labelledby="solve-heading">
+    <ul class="solve-grid carousel-track" id="solveCarousel" data-carousel-track aria-label="Problems we solve">
       <li class="solve-card reveal" style="--delay:0ms">
         <header class="solve-head"><span>&gt;&gt; ERR.01</span><span>MARKETING</span></header>
         <h3>Marketing that doesn't bring leads</h3>
@@ -268,9 +269,9 @@
         <p class="solve-fix"><b>&gt; FIX:</b> Fast, custom-engineered web apps, unified databases, and API integrations built to scale cleanly without technical debt.</p>
       </li>
     </ul>
-    <div class="solve-controls">
-      <button type="button" class="btn solve-arrow" id="solvePrev" aria-label="Previous problems" aria-controls="solveCarousel">&lt; Previous</button>
-      <button type="button" class="btn solve-arrow" id="solveNext" aria-label="Next problems" aria-controls="solveCarousel">Next &gt;</button>
+    <div class="solve-controls carousel-controls">
+      <button type="button" class="btn carousel-arrow" id="solvePrev" data-carousel-prev aria-label="Previous problems" aria-controls="solveCarousel">&lt; Previous</button>
+      <button type="button" class="btn carousel-arrow" id="solveNext" data-carousel-next aria-label="Next problems" aria-controls="solveCarousel">Next &gt;</button>
     </div>
     </div>
   </section>
@@ -280,11 +281,12 @@
     <div class="sec-head">
       <div>
         <p class="eyebrow" data-scramble>03 — Services To Be Offered</p>
-        <h2 class="sec-h plain-h split">Practical help from code to hardware.</h2>
+        <h2 class="sec-h plain-h split" id="services-heading">Practical help from code to hardware.</h2>
       </div>
       <p class="sec-label">SERVICES.LOG // 06 AREAS</p>
     </div>
-    <ul class="service-grid">
+    <div class="service-carousel" data-card-carousel role="region" aria-roledescription="carousel" aria-labelledby="services-heading">
+    <ul class="service-grid carousel-track" id="serviceCarousel" data-carousel-track aria-label="Services offered">
       <li class="service-card reveal" style="--delay:0ms">
         <span class="service-num">01</span>
         <h3>Web Design &amp; Development</h3>
@@ -316,6 +318,11 @@
         <p>Custom digital graphics and visual assets for websites and social media, shaped to fit your brand and communicate clearly.</p>
       </li>
     </ul>
+    <div class="service-controls carousel-controls">
+      <button type="button" class="btn carousel-arrow" id="servicePrev" data-carousel-prev aria-label="Previous services" aria-controls="serviceCarousel">&lt; Previous</button>
+      <button type="button" class="btn carousel-arrow" id="serviceNext" data-carousel-next aria-label="Next services" aria-controls="serviceCarousel">Next &gt;</button>
+    </div>
+    </div>
     <a class="btn services-contact reveal" href="#contact" style="--delay:320ms">&gt; Discuss a project<span class="cursor">▮</span></a>
   </section>
 

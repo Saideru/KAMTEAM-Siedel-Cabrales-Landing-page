@@ -74,16 +74,15 @@ $("#inquirySend").addEventListener("click", e => {
 $("#year").textContent = new Date().getFullYear();
 
 /* ================================================================
-   What We Solve carousel
+   Card carousels
    ================================================================ */
-(() => {
-  const carousel = $(".solve-carousel");
-  const track = $("#solveCarousel");
-  const previous = $("#solvePrev");
-  const next = $("#solveNext");
-  if (!carousel || !track || !previous || !next) return;
+$$("[data-card-carousel]").forEach(carousel => {
+  const track = $("[data-carousel-track]", carousel);
+  const previous = $("[data-carousel-prev]", carousel);
+  const next = $("[data-carousel-next]", carousel);
+  if (!track || !previous || !next) return;
 
-  const cards = $$(".solve-card", track);
+  const cards = Array.from(track.children);
   const AUTOPLAY_MS = 6500;
   let timer = 0, inView = false, hovering = false, focused = false;
 
@@ -109,8 +108,8 @@ $("#year").textContent = new Date().getFullYear();
 
     const current = track.scrollLeft;
     const target = direction > 0
-      ? (current + stride >= maxScroll - 1 ? 0 : current + stride)
-      : (current - stride <= 1 ? maxScroll : current - stride);
+      ? (current >= maxScroll - 1 ? 0 : Math.min(current + stride, maxScroll))
+      : (current <= 1 ? maxScroll : Math.max(current - stride, 0));
     track.scrollTo({ left: target, behavior: REDUCED ? "auto" : "smooth" });
   }
 
@@ -127,7 +126,7 @@ $("#year").textContent = new Date().getFullYear();
     inView = entry.isIntersecting;
     schedule();
   }, { threshold: 0.2 }).observe(carousel);
-})();
+});
 
 /* ================================================================
    AI Creatives player — items with data-src play video, others show a title card
