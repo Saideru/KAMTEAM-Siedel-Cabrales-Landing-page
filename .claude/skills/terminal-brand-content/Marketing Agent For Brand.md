@@ -1,4 +1,4 @@
----
+  ---
 name: terminal-brand-content
 description: Generate social media posts, campaign drafts, and copy variations for Siedel Cabrales' personal brand (AI engineering, full-stack development, SEO, LEADLY OS, kamteam) using a dark-mode terminal voice. Use when the user asks to create, draft, or update content for LinkedIn, Instagram, or TikTok.
 ---
