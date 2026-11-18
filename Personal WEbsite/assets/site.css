@@ -903,7 +903,7 @@ html.is-loading .hero-art{opacity:0}
    --d is the darkness (0 = light hero at the top, 1 = full dark CRT).
    site.js sets it on <html> from scroll position. In the light state the hero is
    black ink with one lively accent (--lively); it blends into the neon palette as it darkens. */
-:root{--d:0;--lively:#e0007a}
+:root{--d:0;--lively:#00d4f0;--lively-ink:#008aa3}
 .day-layer{
   position:fixed;inset:0;z-index:0;pointer-events:none;opacity:calc((1 - var(--d)) * (1 - var(--d)));
   background:radial-gradient(ellipse at 50% 30%,#ffffff 0%,#f1f3f5 55%,#dfe3e8 100%);
@@ -912,10 +912,10 @@ html.is-loading .hero-art{opacity:0}
   --dc:min(1,var(--d) * 1.6);
   --green:color-mix(in srgb,#6df1ff calc(var(--dc) * 100%),#0a0c10);
   --green-dim:color-mix(in srgb,#2fb3cc calc(var(--dc) * 100%),#555b64);
-  --accent:color-mix(in srgb,#7ad8ff calc(var(--dc) * 100%),var(--lively));
+  --accent:color-mix(in srgb,#7ad8ff calc(var(--dc) * 100%),var(--lively-ink));
   --pulse:color-mix(in srgb,#6df1ff calc(var(--dc) * 100%),var(--lively));
   --green-glow:rgba(109,241,255,calc(0.55 * var(--dc)));
-  --accent-glow:color-mix(in srgb,rgba(122,216,255,0.55) calc(var(--dc) * 100%),rgba(224,0,122,0.25));
+  --accent-glow:color-mix(in srgb,rgba(122,216,255,0.55) calc(var(--dc) * 100%),rgba(0,212,240,0.3));
   --foreground:var(--green);
   --muted:var(--green-dim);
   --text:color-mix(in srgb,#bff7ff calc(var(--dc) * 100%),#1a1d22);
@@ -929,13 +929,20 @@ html.is-loading .hero-art{opacity:0}
 .hero-fade{background:linear-gradient(to bottom,transparent,rgba(4,6,16,var(--dc)))}
 /* Invert + hue-rotate flips the circuit art to dark-on-light; desaturated to graphite when light */
 .hero-art{filter:invert(calc(1 - var(--dc))) hue-rotate(calc((1 - var(--dc)) * 180deg)) saturate(var(--dc))}
-/* Light state: black letters with an offset magenta print shadow */
+/* Light state: black letters with an offset cyan print shadow */
 .hero-name{
   text-shadow:
     calc(0.035em * (1 - var(--dc))) calc(0.035em * (1 - var(--dc))) 0 color-mix(in srgb,var(--lively) calc((1 - var(--dc)) * 100%),transparent),
     0 0 0.15em var(--green-glow),0 0 0.4em rgba(109,241,255,calc(0.25 * var(--dc)));
 }
-.hero-services{border-color:var(--pulse) !important;color:var(--pulse) !important}
+/* Hero buttons: black ink when light (neon when dark), fill solid cyan on hover */
+.hero-services{border-color:var(--green) !important;color:var(--green) !important}
+.hero-proj:hover,.hero-proj:focus-visible,
+.hero-services:hover,.hero-services:focus-visible{
+  background:#6df1ff !important;color:#000 !important;border-color:#6df1ff !important;
+  text-shadow:none;filter:none;animation:none;
+  box-shadow:0 0 14px #6df1ff,0 0 32px rgba(109,241,255,0.55);
+}
 .marquee{background:color-mix(in srgb,rgba(5,24,36,0.35) calc(var(--dc) * 100%),rgba(255,255,255,0.5))}
 
 /* ================= Highlighted nav link ("What We Solve") ================= */
