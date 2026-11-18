@@ -474,7 +474,17 @@ tickClock();
 setInterval(tickClock, 1000);
 
 const header = $("#siteHeader");
-const onScroll = () => header.classList.toggle("is-scrolled", scrollY > 40);
+/* Day -> night: the hero starts light and darkens as you scroll past it */
+const heroEl = $("#top");
+const rootStyle = document.documentElement.style;
+let lastD = -1;
+const onScroll = () => {
+  header.classList.toggle("is-scrolled", scrollY > 40);
+  const span = (heroEl ? heroEl.offsetHeight : innerHeight) * 0.7;
+  const t = Math.min(1, Math.max(0, scrollY / span));
+  const d = Math.round(t * t * (3 - 2 * t) * 1000) / 1000;
+  if (d !== lastD) { lastD = d; rootStyle.setProperty("--d", d); }
+};
 addEventListener("scroll", onScroll, { passive: true });
 onScroll();
 
