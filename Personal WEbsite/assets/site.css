@@ -901,37 +901,42 @@ html.is-loading .hero-art{opacity:0}
 
 /* ================= Day → night hero =================
    --d is the darkness (0 = light hero at the top, 1 = full dark CRT).
-   site.js sets it on <html> from scroll position; the tokens below blend between
-   a light "paper terminal" palette and the dark one, scoped to the top of the page. */
-:root{--d:0}
+   site.js sets it on <html> from scroll position. In the light state the hero is
+   black ink with one lively accent (--lively); it blends into the neon palette as it darkens. */
+:root{--d:0;--lively:#e0007a}
 .day-layer{
   position:fixed;inset:0;z-index:0;pointer-events:none;opacity:calc((1 - var(--d)) * (1 - var(--d)));
-  background:radial-gradient(ellipse at 50% 30%,#f6fcfc 0%,#e3f1f2 55%,#cfe3e6 100%);
+  background:radial-gradient(ellipse at 50% 30%,#ffffff 0%,#f1f3f5 55%,#dfe3e8 100%);
 }
-.site-header,.hero,.marquee{
+.hero,.marquee{
   --dc:min(1,var(--d) * 1.6);
-  --green:color-mix(in srgb,#6df1ff calc(var(--dc) * 100%),#07606f);
-  --green-dim:color-mix(in srgb,#2fb3cc calc(var(--dc) * 100%),#3d7f8b);
-  --accent:color-mix(in srgb,#7ad8ff calc(var(--dc) * 100%),#0a6f99);
-  --green-glow:rgba(109,241,255,calc(0.18 + 0.37 * var(--dc)));
-  --accent-glow:rgba(122,216,255,calc(0.18 + 0.37 * var(--dc)));
+  --green:color-mix(in srgb,#6df1ff calc(var(--dc) * 100%),#0a0c10);
+  --green-dim:color-mix(in srgb,#2fb3cc calc(var(--dc) * 100%),#555b64);
+  --accent:color-mix(in srgb,#7ad8ff calc(var(--dc) * 100%),var(--lively));
+  --pulse:color-mix(in srgb,#6df1ff calc(var(--dc) * 100%),var(--lively));
+  --green-glow:rgba(109,241,255,calc(0.55 * var(--dc)));
+  --accent-glow:color-mix(in srgb,rgba(122,216,255,0.55) calc(var(--dc) * 100%),rgba(224,0,122,0.25));
   --foreground:var(--green);
   --muted:var(--green-dim);
-  --text:color-mix(in srgb,#bff7ff calc(var(--dc) * 100%),#163f47);
-  --hi:color-mix(in srgb,#e9fdff calc(var(--dc) * 100%),#05323b);
-  --line-strong:color-mix(in srgb,rgba(109,241,255,0.42) calc(var(--dc) * 100%),rgba(7,96,111,0.35));
+  --text:color-mix(in srgb,#bff7ff calc(var(--dc) * 100%),#1a1d22);
+  --hi:color-mix(in srgb,#e9fdff calc(var(--dc) * 100%),#000);
+  --line-strong:color-mix(in srgb,rgba(109,241,255,0.42) calc(var(--dc) * 100%),rgba(0,0,0,0.25));
 }
-/* The open mobile menu is always dark, so the header over it is too */
-.site-header:has(.burger.is-open){--d:1}
-.site-header.is-scrolled .site-nav{
-  background:color-mix(in srgb,rgba(4,6,16,0.82) calc(var(--dc) * 100%),rgba(236,247,247,0.82));
-}
+/* Header: always a solid black bar with the neon palette */
+.site-header .site-nav,
+.site-header.is-scrolled .site-nav{background:#000;border-bottom-color:var(--line-strong)}
 .hero-stats dd{color:var(--hi)}
 .hero-fade{background:linear-gradient(to bottom,transparent,rgba(4,6,16,var(--dc)))}
-/* Invert + hue-rotate keeps the cyan hue but flips it dark-on-light */
-.hero-art{filter:invert(calc(1 - var(--dc))) hue-rotate(calc((1 - var(--dc)) * 180deg)) saturate(calc(1.5 - 0.5 * var(--dc)))}
-.monogram{background:color-mix(in srgb,rgba(10,44,60,0.4) calc(var(--dc) * 100%),rgba(255,255,255,0.5))}
-.marquee{background:color-mix(in srgb,rgba(5,24,36,0.35) calc(var(--dc) * 100%),rgba(255,255,255,0.35))}
+/* Invert + hue-rotate flips the circuit art to dark-on-light; desaturated to graphite when light */
+.hero-art{filter:invert(calc(1 - var(--dc))) hue-rotate(calc((1 - var(--dc)) * 180deg)) saturate(var(--dc))}
+/* Light state: black letters with an offset magenta print shadow */
+.hero-name{
+  text-shadow:
+    calc(0.035em * (1 - var(--dc))) calc(0.035em * (1 - var(--dc))) 0 color-mix(in srgb,var(--lively) calc((1 - var(--dc)) * 100%),transparent),
+    0 0 0.15em var(--green-glow),0 0 0.4em rgba(109,241,255,calc(0.25 * var(--dc)));
+}
+.hero-services{border-color:var(--pulse) !important;color:var(--pulse) !important}
+.marquee{background:color-mix(in srgb,rgba(5,24,36,0.35) calc(var(--dc) * 100%),rgba(255,255,255,0.5))}
 
 /* ================= Highlighted nav link ("What We Solve") ================= */
 @keyframes navHlPulse{0%,100%{box-shadow:0 0 4px var(--green-glow)}50%{box-shadow:0 0 12px var(--green),0 0 20px var(--green-glow)}}

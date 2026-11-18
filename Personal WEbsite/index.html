@@ -97,15 +97,13 @@
   })();
 </script>
 
-<link rel="stylesheet" href="assets/site.css?v=25">
+<link rel="stylesheet" href="assets/site.css?v=26">
 <style>
   @keyframes btnGlowPulse {
-    0%,100% { box-shadow: 0 0 6px #6df1ff, 0 0 14px rgba(109,241,255,.55), 0 0 28px rgba(109,241,255,.35); text-shadow: 0 0 6px #6df1ff; }
-    50%     { box-shadow: 0 0 12px #6df1ff, 0 0 26px rgba(109,241,255,.85), 0 0 52px rgba(109,241,255,.55); text-shadow: 0 0 10px #6df1ff, 0 0 20px rgba(109,241,255,.7); }
+    0%,100% { box-shadow: 0 0 6px var(--pulse,#6df1ff), 0 0 14px color-mix(in srgb,var(--pulse,#6df1ff) 55%,transparent), 0 0 28px color-mix(in srgb,var(--pulse,#6df1ff) 35%,transparent); }
+    50%     { box-shadow: 0 0 12px var(--pulse,#6df1ff), 0 0 26px color-mix(in srgb,var(--pulse,#6df1ff) 85%,transparent), 0 0 52px color-mix(in srgb,var(--pulse,#6df1ff) 55%,transparent); }
   }
   .hero-services {
-    border-color: var(--green) !important;
-    color: var(--green) !important;
     animation: btnGlowPulse 2.2s ease-in-out infinite;
   }
   .hero-services:hover { filter: brightness(1.2); }
